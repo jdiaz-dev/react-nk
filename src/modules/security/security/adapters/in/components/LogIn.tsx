@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { saveDataUser } from '../../../../../../shared/helpers/LocalStorage';
 import { logIn } from '../../out/SecurityQueries';
+import { Navigate } from 'react-router-dom';
 
 export function LogIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginHandler, { data }] = useMutation(logIn);
-  if (data) saveDataUser(data.logIn);
+  if (data) {
+    saveDataUser(data.logIn);
+    return <Navigate replace to="/sidenav/tickets" />;
+  }
 
   const handleEmailChange = (e: any) => {
     setEmail(e.target.value);

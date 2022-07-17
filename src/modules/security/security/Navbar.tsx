@@ -17,7 +17,7 @@ function CustomLink({ to, children, ...props }: { to: any; children: any }) {
   );
 }
 
-function Navbar() {
+export function Navbar() {
   return (
     <div>
       <nav className="nav">
@@ -42,4 +42,3 @@ function Navbar() {
 
 
 
-export default Navbar;

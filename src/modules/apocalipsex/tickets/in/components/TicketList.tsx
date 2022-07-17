@@ -4,56 +4,75 @@ import './styles.css';
 import { Ticket } from './Ticket';
 import { GET_TICKETS_GROUPED_BY_DAY } from '../../out/TicketQueries';
 import { useQuery } from 'react-apollo';
-import { GetTicketGroupedByDay, GetTicketGroupedByDayRequest, GetTicketGroupedByDayResponse, TicketModel } from '../../out/ticket.types';
+import {
+  GetTicketGroupedByDay,
+  GetTicketGroupedByDayRequest,
+  GetTicketGroupedByDayResponse,
+  TicketModel,
+} from '../../out/ticket.types';
 import { CreateTicket } from './CreateTicket/CreateTicket';
-import { CommandmentCategoriesContext, CreationTicketsContext } from './TicketsContainer';
 import { createCustomDate } from '../../../../../shared/helpers/functions';
+import { CommandmentCategoriesContext, UpdateTicketListContext } from './TicketsContainer';
+import { TicketCategoriesDetail } from '../../../ticket-categories/out/types';
 
-function TicketGroupedByCategory({ tickets }: { tickets: TicketModel[] }) {
-  let ticketListRes;
-  if (tickets) {
-    ticketListRes = tickets.map(({ __typename, ...ticket }: TicketModel) => <Ticket key={ticket._id} ticket={ticket} />);
-  }
-  return <div>{ticketListRes}</div>;
+function TicketGroupedByCategory({ tickets = [] }: { tickets: TicketModel[] }) {
+  return (
+    <>
+      {tickets.map(({ __typename, ...ticket }: TicketModel) => (
+        <Ticket key={ticket._id} ticket={ticket} />
+      ))}
+    </>
+  );
 }
 
-export function TicketList() {
+export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
   const ticketCategoriesContext = useContext(CommandmentCategoriesContext);
-  const creationTicketsContext = useContext(CreationTicketsContext);
-  // const [tickets, setTickets] = useState<GetTicketGroupedByDay[]>([])
-  const { data, loading } = useQuery<GetTicketGroupedByDayResponse, GetTicketGroupedByDayRequest>(
+  const updateTicketListContext = useContext(UpdateTicketListContext);
+  const [tickets, setTickets] = useState<GetTicketGroupedByDay[]>([]);
+  const { loading, refetch } = useQuery<GetTicketGroupedByDayResponse, GetTicketGroupedByDayRequest>(
     GET_TICKETS_GROUPED_BY_DAY,
     {
       variables: {
         input: {
-          startDate: createCustomDate(creationTicketsContext, 0),
-          endDate: createCustomDate(creationTicketsContext, 23),
+          startDate: createCustomDate(selectedDate, 0),
+          endDate: createCustomDate(selectedDate, 23),
         },
       },
     },
   );
-  if (loading) return <div>Loading</div>;
 
-  let categoryGroupContainers;
-  if (data && ticketCategoriesContext) {
-    console.log('--------data2', data);
-    const categories = ticketCategoriesContext.map((item) => item.name);
+  useEffect(() => {
+    if (updateTicketListContext.updateList) {
+      refetch({
+        input: {
+          startDate: createCustomDate(selectedDate, 0),
+          endDate: createCustomDate(selectedDate, 23),
+        },
+      }).then((res) => setTickets(res.data.getTicketsGroupedByDay));
+      updateTicketListContext.setUpdateList(false);
+    }
+    return () => {
+      setTickets([]);
+    };
+  }, [selectedDate, updateTicketListContext.updateList]);
 
-    const sortedTickets = data.getTicketsGroupedByDay.sort((a, b) => categories.indexOf(a._id) - categories.indexOf(b._id));
-    // setTickets(sortedTickets)
+  if (loading) return <div>loading...</div>;
 
-    categoryGroupContainers = categories.map((item, index) => (
-      <div className="ticketCategoryContainer">
-        {!!sortedTickets[index] && (
-          <TicketGroupedByCategory key={sortedTickets[index]._id} tickets={sortedTickets[index].tickets} />
-        )}
-        {<CreateTicket key={item} category={item} />}
+  return (
+    //fix: use fragments instead of div tag
+    <div>
+      <div className="tickets">
+        {ticketCategoriesContext.map((ticketCategory, index) => (
+          <React.Fragment key={index}>
+            {tickets[index] && tickets[index]?._id == ticketCategory.name && (
+              <div className="ticketCategoryContainer">
+                <TicketGroupedByCategory tickets={tickets[index].tickets} />
+                <CreateTicket category={ticketCategory.name} />
+              </div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
-    ));
-  }
-  /* useEffect(() => {
-      console.log('--------data1', data);
-      
-    }, [data]); */
-  return <div className="tickets">{categoryGroupContainers}</div>;
+    </div>
+  );  
 }

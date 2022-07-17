@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -9,6 +9,7 @@ import { CommandmentList } from '../shared/CommandmentList';
 import './createTicket.css';
 import { TicketModel } from '../../../out/ticket.types';
 import { useEffect } from 'react';
+import { UpdateTicketListContext } from '../TicketsContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,12 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export function CreateTicket({ category }: { category: string }) {
+  const updateTicketListContext = useContext(UpdateTicketListContext);
   const classes = useStyles();
   const [displayButton, setDisplayButton] = useState(true);
   const [displayForm, setDisplayForm] = useState(false);
   const [isListShown, setIsListShown] = useState(false);
   const [ticket, setTicket] = useState<TicketModel>({ content: '', ticketCategory: category, commandment: '' });
-  const [createTicketHandler] = useMutation(CREATE_TICKET);
+  const [createTicket, { data }] = useMutation(CREATE_TICKET);
   const refDiv = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -44,6 +46,17 @@ export function CreateTicket({ category }: { category: string }) {
     document.addEventListener('click', clickOutsideHandler, true);
     return () => document.removeEventListener('click', clickOutsideHandler, true);
   }, [displayForm, isListShown]);
+
+  const createTickeHandler = async () => {
+    const res = await createTicket({
+      variables: {
+        input: {
+          ...ticket,
+        },
+      },
+    });
+    if(res.data) updateTicketListContext.setUpdateList(true);
+  };
 
   return (
     <div ref={refDiv}>
@@ -71,18 +84,7 @@ export function CreateTicket({ category }: { category: string }) {
             </div>
 
             <br />
-            <Button
-              type="button"
-              onClick={() =>
-                createTicketHandler({
-                  variables: {
-                    input: {
-                      ...ticket,
-                    },
-                  },
-                })
-              }
-            >
+            <Button type="button" onClick={createTickeHandler}>
               Guardar
             </Button>
           </form>
@@ -91,4 +93,3 @@ export function CreateTicket({ category }: { category: string }) {
     </div>
   );
 }
-

@@ -13,19 +13,26 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 
 export const CommandmentsContext = createContext<CommandmentDetail[] | null>(null);
 export const CommandmentCategoriesContext = createContext<TicketCategoriesDetail[]>([]);
-export const CreationTicketsContext = createContext<Date|null>(new Date());
+export const UpdateTicketListContext = createContext<{
+  updateList: boolean;
+  setUpdateList: React.Dispatch<React.SetStateAction<boolean>>;
+}>({ updateList: true, setUpdateList: useState });
 
 function TicketsContainer() {
   // we open and closing dialog using state variable
   const { data: commandments } = useQuery<GetCommandmentsResponse>(GET_COMMANDMENTS);
   const { data: ticketCategories } = useQuery<TicketCategoriesResponse>(GET_TICKET_CATEGORIES);
 
-  const [selectedDate, setSelectedDate] = useState<Date|null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [updateList, setUpdateList] = useState(true);
+  const value = {
+    updateList,
+    setUpdateList,
+  };
 
-  if (selectedDate) console.log('-----selectedDate', selectedDate);
-
-  const handleDateChange = (date: Date| null) => {
+  const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
+    setUpdateList(true);
   };
 
   return (
@@ -33,7 +40,7 @@ function TicketsContainer() {
       {!!commandments && !!ticketCategories && (
         <CommandmentsContext.Provider value={commandments.getCommandments}>
           <CommandmentCategoriesContext.Provider value={ticketCategories.getTicketCategories}>
-            <CreationTicketsContext.Provider value={selectedDate}>
+            <UpdateTicketListContext.Provider value={value}>
               <div>TicketsContainer</div>
               <div>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -54,9 +61,9 @@ function TicketsContainer() {
                   </Grid>
                 </MuiPickersUtilsProvider>
                 <TicketCategories />
-                <TicketList />
+                <TicketList selectedDate={selectedDate} />
               </div>
-            </CreationTicketsContext.Provider>
+            </UpdateTicketListContext.Provider>
           </CommandmentCategoriesContext.Provider>
         </CommandmentsContext.Provider>
       )}

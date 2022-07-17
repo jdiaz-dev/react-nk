@@ -46,7 +46,7 @@
 /* ------tickets */
 .tickets {
   width: 100%;
-  border: 2px solid red;
+  border: 2px solid green;
   display: flex;
   justify-content: space-between;
 }

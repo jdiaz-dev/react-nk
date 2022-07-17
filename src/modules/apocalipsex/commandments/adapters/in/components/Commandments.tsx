@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery } from 'react-apollo';
 import { GET_COMMANDMENTS } from '../../out/CommandmentsQueries';
 
-//Commandments only is responsible to rende li tag
 function Commandment({ commandment }: { commandment: any }) {
   return <li>{commandment.commandment}</li>;
 }
@@ -10,10 +9,8 @@ function Commandment({ commandment }: { commandment: any }) {
 //Commandments only is responsible to rende Commandment component
 export function Commandments() {
   const { data } = useQuery(GET_COMMANDMENTS);
-  // console.log(data);
   let commandments;
   if (data) {
-    console.log('---------data', data);
     commandments = data.getCommandments.map((commandment: any) => (
       /* 
         key prop

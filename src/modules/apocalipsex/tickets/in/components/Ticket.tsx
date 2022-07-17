@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -18,24 +18,29 @@ import { useMutation } from 'react-apollo';
 import { DELETE_TICKET } from '../../out/TicketQueries';
 import { ConfirmDialog } from '../../../../../shared/components/ConfirmDialog';
 import { DataConfirm } from '../../../../../shared/types';
+import { UpdateTicketListContext } from './TicketsContainer';
 
 export function Ticket({ ticket }: { ticket: TicketModel }) {
+  const updateTicketListContext = useContext(UpdateTicketListContext);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState<DataConfirm>({ openDialog: false, resultConfirm: false });
-  const [deleteTicketHandler] = useMutation(DELETE_TICKET);
-
-  if (ticket) console.log('------------ticket', ticket);
+  const [deleteTicket] = useMutation(DELETE_TICKET);
   useEffect(() => {
-    if (openConfirmDialog.resultConfirm) {
-      deleteTicketHandler({
-        variables: {
-          input: {
-            _id: ticket._id,
+    const deleteTicketHandler = async () => {
+      if (openConfirmDialog.resultConfirm) {
+        const res = await deleteTicket({
+          variables: {
+            input: {
+              _id: ticket._id,
+            },
           },
-        },
-      });
-      setOpenConfirmDialog({ ...openConfirmDialog, openDialog: false });
+        });
+        setOpenConfirmDialog({ ...openConfirmDialog, openDialog: false });
+        if(res.data) updateTicketListContext.setUpdateList(true)
+      }
     }
+    deleteTicketHandler()
+    
   }, [openConfirmDialog.resultConfirm]);
 
   return (

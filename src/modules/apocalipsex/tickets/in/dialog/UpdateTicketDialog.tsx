@@ -20,6 +20,7 @@ import { CommandmentList } from '../components/shared/CommandmentList';
 import { CategoryTicketList } from './CategoryTicketList';
 import { useMutation } from 'react-apollo';
 import { UDPDATE_TICKET } from '../../out/TicketQueries';
+import { UpdateTicketListContext } from '../components/TicketsContainer';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -64,8 +65,21 @@ export function UpdateTicketDialog({
   setOpenUpdateDialog: (openUpdateDialog: boolean) => void;
   ticket: TicketModel;
 }) {
+  const updateTicketListContext = useContext(UpdateTicketListContext);
   const [ticket, setTicket] = useState<TicketModel>({ ..._ticket });
-  const [updateTicketHandler] = useMutation(UDPDATE_TICKET);
+  const [updateTicket] = useMutation(UDPDATE_TICKET);
+
+  const updateTicketHandler = async () => {
+    const res = await updateTicket({
+      variables: {
+        input: {
+          ...ticket,
+        },
+      },
+    });
+    setOpenUpdateDialog(false);
+    if(res.data) updateTicketListContext.setUpdateList(true)
+  }
 
   return (
     <Dialog
@@ -100,16 +114,7 @@ export function UpdateTicketDialog({
       <DialogActions>
         <Button onClick={() => setOpenUpdateDialog(false)}>Cancelar</Button>
         <Button
-          onClick={() => {
-            updateTicketHandler({
-              variables: {
-                input: {
-                  ...ticket,
-                },
-              },
-            });
-            setOpenUpdateDialog(false);
-          }}
+          onClick={updateTicketHandler}
         >
           Guardar cambios
         </Button>
