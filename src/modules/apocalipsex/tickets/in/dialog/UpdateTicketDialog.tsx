@@ -20,7 +20,7 @@ import { CommandmentList } from '../components/shared/CommandmentList';
 import { CategoryTicketList } from './CategoryTicketList';
 import { useMutation } from 'react-apollo';
 import { UDPDATE_TICKET } from '../../out/TicketQueries';
-import { UpdateTicketListContext } from '../components/TicketsContainer';
+import { ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -65,7 +65,7 @@ export function UpdateTicketDialog({
   setOpenUpdateDialog: (openUpdateDialog: boolean) => void;
   ticket: TicketModel;
 }) {
-  const updateTicketListContext = useContext(UpdateTicketListContext);
+  const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const [ticket, setTicket] = useState<TicketModel>({ ..._ticket });
   const [updateTicket] = useMutation(UDPDATE_TICKET);
 
@@ -78,7 +78,7 @@ export function UpdateTicketDialog({
       },
     });
     setOpenUpdateDialog(false);
-    if(res.data) updateTicketListContext.setUpdateList(true)
+    if(res.data) reFetchTicketListContext.setReFetchTicketList(true)
   }
 
   return (
@@ -103,9 +103,9 @@ export function UpdateTicketDialog({
         <TextField
           autoFocus
           margin="dense"
-          id="name"
-          label="Email Address"
-          type="email"
+          id="content"
+          label="Contenido"
+          type="text"
           fullWidth
           value={ticket.content}
           onChange={(e) => setTicket({ ...ticket, content: e.target.value })}

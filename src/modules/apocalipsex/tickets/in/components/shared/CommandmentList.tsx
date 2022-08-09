@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import { TicketModel } from '../../../out/ticket.types';
 import { useContext } from 'react';
-import { CommandmentsContext } from '../TicketsContainer';
+import { CommandmentsContext } from '../../../../apocalipsex/in/ApocalipsexContainer';
 
 export function CommandmentList({
   ticket,

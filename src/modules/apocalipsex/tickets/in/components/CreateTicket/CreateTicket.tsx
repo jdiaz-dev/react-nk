@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { RefObject, useContext, useRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -6,10 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import { useMutation } from 'react-apollo';
 import { CREATE_TICKET } from '../../../out/TicketQueries';
 import { CommandmentList } from '../shared/CommandmentList';
-import './createTicket.css';
+import './createTicket.scss';
 import { TicketModel } from '../../../out/ticket.types';
 import { useEffect } from 'react';
-import { UpdateTicketListContext } from '../TicketsContainer';
+import { ReFetchTicketListContext } from '../../../../apocalipsex/in/ApocalipsexContainer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export function CreateTicket({ category }: { category: string }) {
-  const updateTicketListContext = useContext(UpdateTicketListContext);
+  const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const classes = useStyles();
   const [displayButton, setDisplayButton] = useState(true);
   const [displayForm, setDisplayForm] = useState(false);
   const [isListShown, setIsListShown] = useState(false);
   const [ticket, setTicket] = useState<TicketModel>({ content: '', ticketCategory: category, commandment: '' });
   const [createTicket, { data }] = useMutation(CREATE_TICKET);
-  const refDiv = useRef<HTMLElement>(null);
+  const refDiv = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const clickOutsideHandler = (event: any) => {
@@ -55,7 +55,7 @@ export function CreateTicket({ category }: { category: string }) {
         },
       },
     });
-    if(res.data) updateTicketListContext.setUpdateList(true);
+    if (res.data) reFetchTicketListContext.setReFetchTicketList(true);
   };
 
   return (

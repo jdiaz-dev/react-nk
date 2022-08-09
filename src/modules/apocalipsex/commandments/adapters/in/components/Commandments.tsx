@@ -3,7 +3,7 @@ import { useQuery } from 'react-apollo';
 import { GET_COMMANDMENTS } from '../../out/CommandmentsQueries';
 
 function Commandment({ commandment }: { commandment: any }) {
-  return <li>{commandment.commandment}</li>;
+  return <li>{commandment.name}</li>;
 }
 
 //Commandments only is responsible to rende Commandment component

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import './styles.css';
+import './styles.scss';
 import { Ticket } from './Ticket';
 import { GET_TICKETS_GROUPED_BY_DAY } from '../../out/TicketQueries';
 import { useQuery } from 'react-apollo';
@@ -12,7 +12,7 @@ import {
 } from '../../out/ticket.types';
 import { CreateTicket } from './CreateTicket/CreateTicket';
 import { createCustomDate } from '../../../../../shared/helpers/functions';
-import { CommandmentCategoriesContext, UpdateTicketListContext } from './TicketsContainer';
+import { CommandmentCategoriesContext, ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
 import { TicketCategoriesDetail } from '../../../ticket-categories/out/types';
 
 function TicketGroupedByCategory({ tickets = [] }: { tickets: TicketModel[] }) {
@@ -27,34 +27,37 @@ function TicketGroupedByCategory({ tickets = [] }: { tickets: TicketModel[] }) {
 
 export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
   const ticketCategoriesContext = useContext(CommandmentCategoriesContext);
-  const updateTicketListContext = useContext(UpdateTicketListContext);
+  const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const [tickets, setTickets] = useState<GetTicketGroupedByDay[]>([]);
+
+  const startDay = createCustomDate(selectedDate, 0, 0, 0);
+  const endDay = createCustomDate(selectedDate, 23, 59, 59);
   const { loading, refetch } = useQuery<GetTicketGroupedByDayResponse, GetTicketGroupedByDayRequest>(
     GET_TICKETS_GROUPED_BY_DAY,
     {
       variables: {
         input: {
-          startDate: createCustomDate(selectedDate, 0),
-          endDate: createCustomDate(selectedDate, 23),
+          startDate: startDay,
+          endDate: endDay,
         },
       },
     },
   );
 
   useEffect(() => {
-    if (updateTicketListContext.updateList) {
+    if (reFetchTicketListContext.reFetchTicketList) {
       refetch({
         input: {
-          startDate: createCustomDate(selectedDate, 0),
-          endDate: createCustomDate(selectedDate, 23),
+          startDate: startDay,
+          endDate: endDay,
         },
       }).then((res) => setTickets(res.data.getTicketsGroupedByDay));
-      updateTicketListContext.setUpdateList(false);
+      reFetchTicketListContext.setReFetchTicketList(false);
     }
     return () => {
       setTickets([]);
     };
-  }, [selectedDate, updateTicketListContext.updateList]);
+  }, [selectedDate, reFetchTicketListContext.reFetchTicketList]);
 
   if (loading) return <div>loading...</div>;
 
@@ -74,5 +77,5 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
         ))}
       </div>
     </div>
-  );  
+  );
 }

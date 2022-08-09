@@ -1,3 +1,4 @@
 export enum LocalStorageEnum {
-  dataUser = 'dataUser'
+  dataUser = 'dataUser',
+  authenticated = 'authenticated'
 } 

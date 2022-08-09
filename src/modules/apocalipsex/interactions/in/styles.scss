@@ -1,0 +1,12 @@
+div.containerInteractions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid green;
+
+  div.boxInteractions {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+  }
+}

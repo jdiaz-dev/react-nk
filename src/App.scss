@@ -42,7 +42,6 @@
   }
 }
 
-
 /* ------tickets */
 .tickets {
   width: 100%;
@@ -50,3 +49,20 @@
   display: flex;
   justify-content: space-between;
 }
+
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  .header{
+  border:2px solid red;
+
+  }
+  .sidebar {
+    width: 20%;
+  }
+  .app-container {
+    width: 80%;
+  }
+}
+

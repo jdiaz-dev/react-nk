@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useMutation } from 'react-apollo';
 import { saveDataUser } from '../../../../../../shared/helpers/LocalStorage';
 import { logIn } from '../../out/SecurityQueries';
 import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../../../../../../App';
 
 export function LogIn() {
+  const authContext = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginHandler, { data }] = useMutation(logIn);
   if (data) {
     saveDataUser(data.logIn);
+    authContext.setIsAuthenticated(true)
     return <Navigate replace to="/sidenav/tickets" />;
   }
 

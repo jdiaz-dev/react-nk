@@ -18,10 +18,10 @@ import { useMutation } from 'react-apollo';
 import { DELETE_TICKET } from '../../out/TicketQueries';
 import { ConfirmDialog } from '../../../../../shared/components/ConfirmDialog';
 import { DataConfirm } from '../../../../../shared/types';
-import { UpdateTicketListContext } from './TicketsContainer';
+import { ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
 
 export function Ticket({ ticket }: { ticket: TicketModel }) {
-  const updateTicketListContext = useContext(UpdateTicketListContext);
+  const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState<DataConfirm>({ openDialog: false, resultConfirm: false });
   const [deleteTicket] = useMutation(DELETE_TICKET);
@@ -36,7 +36,7 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
           },
         });
         setOpenConfirmDialog({ ...openConfirmDialog, openDialog: false });
-        if(res.data) updateTicketListContext.setUpdateList(true)
+        if(res.data) reFetchTicketListContext.setReFetchTicketList(true)
       }
     }
     deleteTicketHandler()

@@ -1,7 +1,7 @@
 import { gql } from 'apollo-boost';
 
 export const CREATE_TICKET = gql`
-  mutation _createTicket($input: TicketDto!) {
+  mutation _createTicket($input: CreateTicketDto!) {
     createTicket(input: $input) {
       _id
       commandment
@@ -13,7 +13,7 @@ export const CREATE_TICKET = gql`
 `;
 
 export const GET_TICKETS_GROUPED_BY_DAY = gql`
-  query _getTicketsGroupedByDay($input: GetTicketsGroupedByDay!) {
+  query _getTicketsGroupedByDay($input: GetTicketsGroupedByDayDto!) {
     getTicketsGroupedByDay(input: $input) {
       _id
       tickets {

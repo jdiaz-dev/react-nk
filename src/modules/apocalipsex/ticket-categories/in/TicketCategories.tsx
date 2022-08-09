@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import './styles.css';
+import './styles.scss';
 import { TicketCategoriesDetail, TicketCategoriesResponse } from '../out/types';
-import { CommandmentCategoriesContext } from '../../tickets/in/components/TicketsContainer';
+import { CommandmentCategoriesContext } from '../../apocalipsex/in/ApocalipsexContainer';
 
 const useStyles = makeStyles({
   root: {

@@ -1,7 +1,7 @@
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import { TicketModel } from '../../out/ticket.types';
-import { CommandmentCategoriesContext } from '../components/TicketsContainer';
+import { CommandmentCategoriesContext } from '../../../apocalipsex/in/ApocalipsexContainer';
 
 
 export function CategoryTicketList({
@@ -26,7 +26,7 @@ export function CategoryTicketList({
 
   let categoryItems;
   if (ticketCategoriesContext) {
-    categoryItems = ticketCategoriesContext.map((item) => (
+    categoryItems = ticketCategoriesContext.map((item) => ( 
       <MenuItem
         key={item.name}
         onClick={(e: any) => {

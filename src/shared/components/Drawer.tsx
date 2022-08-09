@@ -14,6 +14,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import { Link, Outlet } from 'react-router-dom';
+import Header from './Header';
 
 declare module 'csstype' {
   interface Properties {
@@ -50,10 +51,10 @@ const useTreeItemStyles = makeStyles((theme: Theme) =>
       borderTopRightRadius: theme.spacing(2),
       borderBottomRightRadius: theme.spacing(2),
       paddingRight: theme.spacing(1),
-      fontWeight: theme.typography.fontWeightMedium,
+      /* fontWeight: theme.typography.fontWeightMedium,
       '$expanded > &': {
         fontWeight: theme.typography.fontWeightRegular,
-      },
+      }, */
     },
     group: {
       marginLeft: 0,
@@ -126,23 +127,31 @@ const useStyles = makeStyles(
   }),
 );
 
-export function GmailTreeView() {
+export function Drawer() {
   const classes = useStyles();
 
   return (
     <>
-      <TreeView
-        className={classes.root}
-        defaultExpanded={['3']}
-        defaultCollapseIcon={<ArrowDropDownIcon />}
-        defaultExpandIcon={<ArrowRightIcon />}
-        defaultEndIcon={<div style={{ width: 24 }} />}
-      >
-        <StyledTreeItem nodeId="1" labelText="commandments" labelIcon={MailIcon} />
-        <StyledTreeItem nodeId="2" labelText="openers" labelIcon={DeleteIcon} />
-        <StyledTreeItem nodeId="3" labelText="tickets" labelIcon={Label} />
-      </TreeView>
-      <Outlet />
+      <div className="main-container">
+          <div className="sidebar">
+            <div>Apocalipsex</div>
+            <TreeView
+              className={classes.root}
+              defaultExpanded={['3']}
+              defaultCollapseIcon={<ArrowDropDownIcon />}
+              defaultExpandIcon={<ArrowRightIcon />}
+              defaultEndIcon={<div style={{ width: 24 }} />}
+            >
+              <StyledTreeItem nodeId="1" labelText="commandments" labelIcon={MailIcon} />
+              <StyledTreeItem nodeId="2" labelText="openers" labelIcon={DeleteIcon} />
+              <StyledTreeItem nodeId="3" labelText="tickets" labelIcon={Label} />
+            </TreeView>
+          </div>
+          <div className="app-container">
+            <Header></Header>
+            <Outlet />
+          </div>
+      </div>
     </>
   );
 }
