@@ -1,6 +1,6 @@
-*{
+* {
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 .App {
@@ -42,21 +42,29 @@
   }
 }
 
-/* ------tickets */
-.tickets {
+/* ------both main container of apocalipsex component */
+div.ticket-categories{
+  margin-bottom: 10px;
+}
+div.ticket-categories,
+div.ticket-list {
   width: 100%;
-  border: 2px solid green;
   display: flex;
   justify-content: space-between;
-}
 
+  div.category-container,
+  div.ticketCategoryContainer {
+    width: 23.75%;
+    margin: 0;
+    padding: 0;
+  }
+}
 
 .main-container {
   display: flex;
   justify-content: space-between;
-  .header{
-  border:2px solid red;
-
+  .header {
+    border: 2px solid red;
   }
   .sidebar {
     width: 20%;
@@ -65,4 +73,3 @@
     width: 80%;
   }
 }
-

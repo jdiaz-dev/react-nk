@@ -3,6 +3,7 @@ export type TicketModel = {
   content: string;
   commandment: string;
   ticketCategory: string;
+  dateOffset?: number
   __typename?: string;
 };
 

@@ -19,10 +19,13 @@ import { DELETE_TICKET } from '../../out/TicketQueries';
 import { ConfirmDialog } from '../../../../../shared/components/ConfirmDialog';
 import { DataConfirm } from '../../../../../shared/types';
 import { ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
+import { ExtraTicketCategoryEnum } from '../../../../../shared/Consts';
+import { ReadTicketDialog } from '../dialog/ReadTicketDialog';
 
 export function Ticket({ ticket }: { ticket: TicketModel }) {
   const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+  const [openReadDialog, setOpenReadDialog] = useState(false);
   const [openConfirmDialog, setOpenConfirmDialog] = useState<DataConfirm>({ openDialog: false, resultConfirm: false });
   const [deleteTicket] = useMutation(DELETE_TICKET);
   useEffect(() => {
@@ -36,17 +39,23 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
           },
         });
         setOpenConfirmDialog({ ...openConfirmDialog, openDialog: false });
-        if(res.data) reFetchTicketListContext.setReFetchTicketList(true)
+        if (res.data) reFetchTicketListContext.setReFetchTicketList(true);
       }
-    }
-    deleteTicketHandler()
-    
+    };
+    deleteTicketHandler();
   }, [openConfirmDialog.resultConfirm]);
 
   return (
     <>
-      <Card style={{ padding: '10px', backgroundColor: 'pink', margin: '5px' }}>
-        <CardContent onClick={() => setOpenUpdateDialog(true)} style={{ backgroundColor: 'red', margin: '5px' }}>
+      <Card style={{ padding: '10px', marginBottom: '3%' }} variant="outlined">
+        <CardContent
+          onClick={
+            ticket.ticketCategory !== ExtraTicketCategoryEnum.TO_ENHANCE
+              ? () => setOpenUpdateDialog(true)
+              : () => setOpenReadDialog(true)
+          }
+          style={{ backgroundColor: 'red', margin: '5px' }}
+        >
           <Typography color="textSecondary">{ticket.ticketCategory}</Typography>
           <Typography color="textSecondary">{ticket.commandment}</Typography>
           <Typography variant="h5" component="p">
@@ -54,18 +63,23 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button
-            onClick={() => {
-              setOpenConfirmDialog({ ...openConfirmDialog, openDialog: true });
-            }}
-            size="small"
-          >
-            Eliminar ticket
-          </Button>
+          {ticket.ticketCategory !== ExtraTicketCategoryEnum.TO_ENHANCE && (
+            <Button
+              onClick={() => {
+                setOpenConfirmDialog({ ...openConfirmDialog, openDialog: true });
+              }}
+              size="small"
+            >
+              Eliminar ticket
+            </Button>
+          )}
           <ConfirmDialog dataConfirm={openConfirmDialog} setDataConfirm={setOpenConfirmDialog} />
         </CardActions>
       </Card>
-      <UpdateTicketDialog openUpdateDialog={openUpdateDialog} setOpenUpdateDialog={setOpenUpdateDialog} ticket={ticket} />
+      {ticket.ticketCategory !== ExtraTicketCategoryEnum.TO_ENHANCE && (
+        <UpdateTicketDialog openUpdateDialog={openUpdateDialog} setOpenUpdateDialog={setOpenUpdateDialog} ticket={ticket} />
+      )}
+      {<ReadTicketDialog openReadDialog={openReadDialog} setOpenReadDialog={setOpenReadDialog} ticket={ticket} />}
     </>
   );
 }

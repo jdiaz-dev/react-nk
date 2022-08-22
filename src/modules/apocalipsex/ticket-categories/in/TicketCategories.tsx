@@ -8,34 +8,53 @@ import './styles.scss';
 import { TicketCategoriesDetail, TicketCategoriesResponse } from '../out/types';
 import { CommandmentCategoriesContext } from '../../apocalipsex/in/ApocalipsexContainer';
 
-const useStyles = makeStyles({
+const stylesCard = makeStyles({
   root: {
-    // minWidth: 100,
-    // maxWidth: 300,
-    // width: "30%",
-    background: 'red',
+    height: '45px',
   },
   bullet: {
     // display: "flex",
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    // margin: '0 2px',
   },
   title: {
     fontSize: 14,
   },
-  pos: {
+  /* pos: {
     marginBottom: 12,
+  }, */
+});
+
+const stylesCardContent = makeStyles({
+  root: {
+    background: 'blue',
+    margin: '0px',
+    padding: '0px',
+  },
+});
+
+const stylesTypography = makeStyles({
+  root: {
+    background: 'blue',
+    height: '45px',
+    lineHeight: '45px',
+    textAlign: 'left',
+    paddingLeft: '10px'
+  },
+  title: {
+    fontSize: 14,
   },
 });
 
 function CategoryTicket({ name }: { name: string }) {
-  const classes = useStyles();
+  const classCard = stylesCard();
+  const classCardContent = stylesCardContent();
+  const classTypography = stylesTypography();
 
   return (
     <div className="category-container">
-      <Card className={classes.root}>
-        <CardContent>
-          <Typography variant="h5" component="h2">
+      <Card className={classCard.root}>
+        <CardContent className={classCardContent.root}>
+          <Typography className={classTypography.root} variant="h5" component="h2">
             {name}
           </Typography>
         </CardContent>
@@ -47,7 +66,7 @@ function CategoryTicket({ name }: { name: string }) {
   );
 }
 
-function TicketCategories() {
+export function TicketCategories() {
   const ticketCategoriesContext = useContext(CommandmentCategoriesContext);
   let ticketCategories;
 
@@ -57,7 +76,5 @@ function TicketCategories() {
     ));
   }
 
-  return <div className="tickets">{ticketCategories}</div>;
+  return <div className="ticket-categories">{ticketCategories}</div>;
 }
-
-export default TicketCategories;

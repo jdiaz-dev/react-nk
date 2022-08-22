@@ -15,10 +15,9 @@ export const createCustomDate = (d: Date | null, hour: number, min: number, seco
     .minute(min)
     .second(seconds)
     .millisecond(999)
-    .toString();
-  // .valueOf();
-  // console.log('---------currentDate', currentDate);
+    .valueOf();
 
-  const res = new Date(currentDate).toISOString();
+  const dateOffset = dayjs().utcOffset() * 60000;
+  const res = new Date(currentDate - dateOffset).toISOString();
   return res;
 };

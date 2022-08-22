@@ -10,6 +10,7 @@ import './createTicket.scss';
 import { TicketModel } from '../../../out/ticket.types';
 import { useEffect } from 'react';
 import { ReFetchTicketListContext } from '../../../../apocalipsex/in/ApocalipsexContainer';
+import dayjs from 'dayjs';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,7 +29,12 @@ export function CreateTicket({ category }: { category: string }) {
   const [displayButton, setDisplayButton] = useState(true);
   const [displayForm, setDisplayForm] = useState(false);
   const [isListShown, setIsListShown] = useState(false);
-  const [ticket, setTicket] = useState<TicketModel>({ content: '', ticketCategory: category, commandment: '' });
+  const [ticket, setTicket] = useState<TicketModel>({
+    content: '',
+    ticketCategory: category,
+    commandment: '',
+    dateOffset: dayjs().utcOffset(),
+  });
   const [createTicket, { data }] = useMutation(CREATE_TICKET);
   const refDiv = useRef<HTMLDivElement>(null);
 

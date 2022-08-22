@@ -43,14 +43,14 @@ function App() {
           {/* <Route path="sidenav" element={<SideNav />}> */}
           {isAuthenticated && (
             <Route path="sidenav" element={<Drawer />}>
-              <Route path="commandments" element={<Commandments />} />
-              <Route path="openers" element={<OpenersContainer />} />
-              <Route path="tickets" element={<ApocalipsexContainer />} />
+              <Route path="Mandamientos" element={<Commandments />} />
+              <Route path="Abridores" element={<OpenersContainer />} />
+              <Route path="Tickets" element={<ApocalipsexContainer />} />
             </Route>
           )}
 
           {/* default route */}
-          <Route path="*" element={<Navigate to={isAuthenticated ? '/sidenav/tickets' : '/login'} />} />
+          <Route path="*" element={<Navigate to={isAuthenticated ? '/sidenav/Tickets' : '/login'} />} />
         </Routes>
       </AuthContext.Provider>
     </div>
@@ -72,5 +72,8 @@ export default App;
 //to build: npm run build
 //to sync to s3 bucket : aws s3 sync build/ s3://fe-apocalipsex-bucket
 
-//TODO
-//create logout component
+/* 
+  * TODO
+    - create logout component
+    - display entire text in update ticket dialog
+*/

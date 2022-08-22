@@ -14,6 +14,7 @@ import { CreateTicket } from './CreateTicket/CreateTicket';
 import { createCustomDate } from '../../../../../shared/helpers/functions';
 import { CommandmentCategoriesContext, ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
 import { TicketCategoriesDetail } from '../../../ticket-categories/out/types';
+import { ExtraTicketCategoryEnum } from '../../../../../shared/Consts';
 
 function TicketGroupedByCategory({ tickets = [] }: { tickets: TicketModel[] }) {
   return (
@@ -64,13 +65,15 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
   return (
     //fix: use fragments instead of div tag
     <div>
-      <div className="tickets">
+      <div className="ticket-list">
         {ticketCategoriesContext.map((ticketCategory, index) => (
           <React.Fragment key={index}>
             {tickets[index] && tickets[index]?._id == ticketCategory.name && (
               <div className="ticketCategoryContainer">
                 <TicketGroupedByCategory tickets={tickets[index].tickets} />
-                <CreateTicket category={ticketCategory.name} />
+                {ticketCategory.name !== ExtraTicketCategoryEnum.TO_ENHANCE && (
+                  <CreateTicket category={ticketCategory.name} />
+                )}
               </div>
             )}
           </React.Fragment>

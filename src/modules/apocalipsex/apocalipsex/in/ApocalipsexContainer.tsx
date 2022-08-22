@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import TicketCategories from '../../ticket-categories/in/TicketCategories';
+import { TicketCategories } from '../../ticket-categories/in/TicketCategories';
 import { TicketList } from '../../tickets/in/components/TicketList';
 import { useQuery } from 'react-apollo';
 import { CommandmentDetail, GetCommandmentsResponse } from '../../commandments/adapters/out/commandments.types';
@@ -44,7 +44,7 @@ export function ApocalipsexContainer() {
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
     setReFetchTicketList(true);
-    setReFetchInteractions(true)
+    setReFetchInteractions(true);
   };
 
   return (
@@ -54,7 +54,7 @@ export function ApocalipsexContainer() {
           <CommandmentCategoriesContext.Provider value={ticketCategories.getTicketCategories}>
             <ReFetchTicketListContext.Provider value={reFetchTicketListContext}>
               <ReFetchInteractionsContext.Provider value={reFetchInteractionsContext}>
-                <div>TicketsContainer</div>
+                <div>Tickets</div>
                 <div>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justifyContent="space-around">
@@ -73,7 +73,7 @@ export function ApocalipsexContainer() {
                       />
                     </Grid>
                   </MuiPickersUtilsProvider>
-                  <InteractionsByDay selectedDate={selectedDate} />
+                  {/* <InteractionsByDay selectedDate={selectedDate} /> */}
                   <TicketCategories />
                   <TicketList selectedDate={selectedDate} />
                 </div>

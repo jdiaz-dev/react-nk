@@ -79,6 +79,13 @@ const useTreeItemStyles = makeStyles((theme: Theme) =>
     labelText: {
       fontWeight: 'inherit',
       flexGrow: 1,
+      textAlign: 'left',
+      textDecoration: 'none',
+    },
+    link: {
+      display: 'block',
+      textDecoration: 'none',
+      color: 'white',
     },
   }),
 );
@@ -93,7 +100,9 @@ function StyledTreeItem(props: StyledTreeItemProps) {
         <div className={classes.labelRoot}>
           <LabelIcon color="inherit" className={classes.labelIcon} />
           <Typography variant="body2" className={classes.labelText}>
-            <Link to={labelText}>{labelText}</Link>
+            <Link className={classes.link} to={labelText}>
+              {labelText}
+            </Link>
           </Typography>
           <Typography variant="caption" color="inherit">
             {labelInfo}
@@ -119,7 +128,11 @@ function StyledTreeItem(props: StyledTreeItemProps) {
 
 const useStyles = makeStyles(
   createStyles({
-    root: {
+    divSidebar: {
+      backgroundColor: '#282d35',
+      color: 'white',
+    },
+    treeView: {
       height: 264,
       flexGrow: 1,
       maxWidth: 400,
@@ -133,24 +146,26 @@ export function Drawer() {
   return (
     <>
       <div className="main-container">
-          <div className="sidebar">
-            <div>Apocalipsex</div>
-            <TreeView
-              className={classes.root}
-              defaultExpanded={['3']}
-              defaultCollapseIcon={<ArrowDropDownIcon />}
-              defaultExpandIcon={<ArrowRightIcon />}
-              defaultEndIcon={<div style={{ width: 24 }} />}
-            >
-              <StyledTreeItem nodeId="1" labelText="commandments" labelIcon={MailIcon} />
-              <StyledTreeItem nodeId="2" labelText="openers" labelIcon={DeleteIcon} />
-              <StyledTreeItem nodeId="3" labelText="tickets" labelIcon={Label} />
-            </TreeView>
-          </div>
-          <div className="app-container">
-            <Header></Header>
-            <Outlet />
-          </div>
+        <div className={`sidebar ${classes.divSidebar} `}>
+          <div>Apocalipsex</div>
+          <TreeView
+            className={classes.treeView}
+            defaultExpanded={['3']}
+            defaultCollapseIcon={<ArrowDropDownIcon />}
+            defaultExpandIcon={<ArrowRightIcon />}
+            defaultEndIcon={<div style={{ width: 24 }} />}
+          >
+            <StyledTreeItem nodeId="1" labelText="Mandamientos" labelIcon={MailIcon} />
+            <StyledTreeItem nodeId="2" labelText="Abridores" labelIcon={DeleteIcon} />
+
+            {/* tickets */}
+            <StyledTreeItem nodeId="3" labelText="Tickets" labelIcon={Label} />
+          </TreeView>
+        </div>
+        <div className="app-container">
+          <Header></Header>
+          <Outlet />
+        </div>
       </div>
     </>
   );

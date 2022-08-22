@@ -1,17 +1,17 @@
 import React, { useContext, useState } from 'react';
-  import {
-    Button,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
-    withStyles,
-    createStyles,
-    Theme,
-    Typography,
-    IconButton,
-    TextField,
-  } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  withStyles,
+  createStyles,
+  Theme,
+  Typography,
+  IconButton,
+  TextField,
+} from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import { TicketModel } from '../../out/ticket.types';
@@ -56,70 +56,44 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   );
 });
 
-export function UpdateTicketDialog({
-  openUpdateDialog,
-  setOpenUpdateDialog,
+export function ReadTicketDialog({
+    openReadDialog,
+    setOpenReadDialog,
   ticket: _ticket,
 }: {
-  openUpdateDialog: boolean;
-  setOpenUpdateDialog: (openUpdateDialog: boolean) => void;
+    openReadDialog: boolean;
+    setOpenReadDialog: (openReadDialog: boolean) => void;
   ticket: TicketModel;
 }) {
-  const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const [ticket, setTicket] = useState<TicketModel>({ ..._ticket });
-  const [updateTicket] = useMutation(UDPDATE_TICKET);
 
-  const updateTicketHandler = async () => {
-    const res = await updateTicket({
-      variables: {
-        input: {
-          ...ticket,
-        },
-      },
-    });
-    setOpenUpdateDialog(false);
-    if(res.data) reFetchTicketListContext.setReFetchTicketList(true)
-  }
+ /*  const updateTicketHandler = async () => {
+    setOpenReadDialog(false);
+  }; */
 
   return (
     <Dialog
-      open={openUpdateDialog}
-      onClose={() => setOpenUpdateDialog(false)}
+      open={openReadDialog}
+      onClose={() => setOpenReadDialog(false)}
       fullWidth={true}
       maxWidth="sm"
       aria-labelledby="dialog-title"
       aria-describedby="dialog-description"
     >
-      <DialogTitle id="dialog-title" onClose={setOpenUpdateDialog}>
+      <DialogTitle id="dialog-title" onClose={setOpenReadDialog}>
         <div>
-          Mandamiento: {ticket.commandment}
-          <CommandmentList ticket={ticket} setTicket={setTicket} />
+          {ticket.commandment}
         </div>
         <div>
-          Resultado: {ticket.ticketCategory}
-          <CategoryTicketList ticket={ticket} setTicket={setTicket} />
+          {ticket.ticketCategory}
         </div>
       </DialogTitle>
       <DialogContent dividers>
         <DialogContentText id="dialog-description"></DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="content"
-          label="Contenido"
-          type="text"
-          fullWidth
-          value={ticket.content}
-          onChange={(e) => setTicket({ ...ticket, content: e.target.value })}
-        />
+        {ticket.content}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setOpenUpdateDialog(false)}>Cancelar</Button>
-        <Button
-          onClick={updateTicketHandler}
-        >
-          Guardar cambios
-        </Button>
+        <Button onClick={() => setOpenReadDialog(false)}>Cerrar</Button>
       </DialogActions>
     </Dialog>
   );

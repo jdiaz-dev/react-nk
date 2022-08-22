@@ -17,6 +17,7 @@ import { GET_INTERACTION_BY_DAY } from '../out/InteractionQueries';
 import './styles.scss';
 import UpdateInteractionsByDayDialog from './UpdateInteractionsByDayDialog';
 import { ReFetchInteractionsContext } from '../../apocalipsex/in/ApocalipsexContainer';
+import { GenderEnum, InteractionsEnum } from '../../../../shared/Consts';
 
 const useStyles = makeStyles({
   root: {
@@ -41,7 +42,7 @@ export function InteractionsByDay({ selectedDate }: { selectedDate: Date | null 
 
   const [interactions, setInteractions] = useState<InteractionsRes>(defaultInteractions);
   const [interactionsModel, setInteractionsModel] = useState<InteractionsModel>(defaultInteractions);
-  console.log('--------interactionsModel', interactionsModel)
+  console.log('--------interactionsModel', interactionsModel);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const { loading, refetch } = useQuery<GetInteractionsByDayQuery, GetInteractionsByDayRequest>(GET_INTERACTION_BY_DAY, {
     variables: {
@@ -74,7 +75,6 @@ export function InteractionsByDay({ selectedDate }: { selectedDate: Date | null 
     return () => {
       setInteractions(defaultInteractions);
       setInteractionsModel(interactionsModel);
-
     };
   }, [selectedDate, reFetchInteractionsContext.reFetchInteractions]);
 
@@ -84,7 +84,12 @@ export function InteractionsByDay({ selectedDate }: { selectedDate: Date | null 
     <Card key={index} className={classes.root}>
       <CardContent>
         <Typography variant="h5" component="h2">
-          {interaction}: {interactions[interaction]}
+          {interaction == InteractionsEnum.TOTAL_MEN
+            ? GenderEnum.MAN
+            : interaction == InteractionsEnum.TOTAL_WOMEN
+            ? GenderEnum.WOMAN
+            : GenderEnum.GROUP}
+          : {interactions[interaction]}
         </Typography>
       </CardContent>
     </Card>
