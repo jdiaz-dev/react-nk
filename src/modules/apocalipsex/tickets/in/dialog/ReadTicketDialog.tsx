@@ -82,6 +82,7 @@ export function ReadTicketDialog({
     >
       <DialogTitle id="dialog-title" onClose={setOpenReadDialog}>
         <div>
+          asdfsdfasdf
           {ticket.commandment}
         </div>
         <div>

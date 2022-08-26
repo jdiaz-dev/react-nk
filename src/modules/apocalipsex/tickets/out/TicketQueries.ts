@@ -17,10 +17,11 @@ export const GET_TICKETS_GROUPED_BY_DAY = gql`
     getTicketsGroupedByDay(input: $input) {
       _id
       tickets {
-        _id,
-        ticketCategory,
-        content,
+        _id
+        ticketCategory
+        content
         commandment
+        achieved
       }
     }
   }
@@ -48,4 +49,13 @@ export const DELETE_TICKET = gql`
   }
 `;
 
-
+export const UPDATE_TICKET_TO_ACHIVED = gql`
+  mutation _updateTicketToAchieved($input: UpdateTicketToAchieved!) {
+    updateTicketToAchieved(input: $input) {
+      _id
+      commandment
+      content
+      ticketCategory
+    }
+  }
+`;

@@ -18,3 +18,17 @@ export enum GenderEnum {
   WOMAN = 'Mujeres',
   GROUP = 'Grupales',
 }
+
+export enum ActionsConfirmDialogEnum {
+  MARK_TICKET_TO_ACHIEVED = 'markTicketToAchieved',
+  REMOVE_TICKET = 'removeTicket',
+}
+
+export enum MessagesConfirmEnum {
+  REMOVE_TICKET = '¿Estás seguro de eliminar este ticket?',
+  MARK_TICKET_TO_ACHIEVED = '¿Quieres marcar este ticket como logrado?',
+}
+
+export enum TicketCategoriesEnum {
+  TO_ENHANCE = 'Por mejorar',
+}

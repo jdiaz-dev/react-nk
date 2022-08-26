@@ -52,7 +52,10 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
           startDate: startDay,
           endDate: endDay,
         },
-      }).then((res) => setTickets(res.data.getTicketsGroupedByDay));
+      }).then((res) => {
+        console.log('-----res', res)
+        setTickets(res.data.getTicketsGroupedByDay)
+      });
       reFetchTicketListContext.setReFetchTicketList(false);
     }
     return () => {

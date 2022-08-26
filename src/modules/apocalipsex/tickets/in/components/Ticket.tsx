@@ -15,34 +15,68 @@ import {
 import { useState } from 'react';
 import { UpdateTicketDialog } from '../dialog/UpdateTicketDialog';
 import { useMutation } from 'react-apollo';
-import { DELETE_TICKET } from '../../out/TicketQueries';
+import { DELETE_TICKET, UPDATE_TICKET_TO_ACHIVED } from '../../out/TicketQueries';
 import { ConfirmDialog } from '../../../../../shared/components/ConfirmDialog';
 import { DataConfirm } from '../../../../../shared/types';
 import { ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
-import { ExtraTicketCategoryEnum } from '../../../../../shared/Consts';
+import {
+  ActionsConfirmDialogEnum,
+  ExtraTicketCategoryEnum,
+  MessagesConfirmEnum,
+  TicketCategoriesEnum,
+} from '../../../../../shared/Consts';
 import { ReadTicketDialog } from '../dialog/ReadTicketDialog';
 
 export function Ticket({ ticket }: { ticket: TicketModel }) {
   const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openReadDialog, setOpenReadDialog] = useState(false);
-  const [openConfirmDialog, setOpenConfirmDialog] = useState<DataConfirm>({ openDialog: false, resultConfirm: false });
+  const [openConfirmDialog, setOpenConfirmDialog] = useState<DataConfirm>({
+    openDialog: false,
+    resultConfirm: false,
+    action: '',
+    message:
+      ticket.ticketCategory === TicketCategoriesEnum.TO_ENHANCE
+        ? MessagesConfirmEnum.MARK_TICKET_TO_ACHIEVED
+        : MessagesConfirmEnum.REMOVE_TICKET,
+  });
+
   const [deleteTicket] = useMutation(DELETE_TICKET);
+  const [updateTicketToAchieved] = useMutation(UPDATE_TICKET_TO_ACHIVED);
+
   useEffect(() => {
     const deleteTicketHandler = async () => {
-      if (openConfirmDialog.resultConfirm) {
-        const res = await deleteTicket({
-          variables: {
-            input: {
-              _id: ticket._id,
-            },
+      const res = await deleteTicket({
+        variables: {
+          input: {
+            _id: ticket._id,
           },
-        });
-        setOpenConfirmDialog({ ...openConfirmDialog, openDialog: false });
-        if (res.data) reFetchTicketListContext.setReFetchTicketList(true);
-      }
+        },
+      });
+      setOpenConfirmDialog({ ...openConfirmDialog, openDialog: false });
+      if (res.data) reFetchTicketListContext.setReFetchTicketList(true);
     };
-    deleteTicketHandler();
+
+    const markTicketToAchieved = async () => {
+      const res = await updateTicketToAchieved({
+        variables: {
+          input: {
+            _id: ticket._id,
+          },
+        },
+      });
+      setOpenConfirmDialog({ ...openConfirmDialog, openDialog: false });
+      if (res.data) reFetchTicketListContext.setReFetchTicketList(true);
+    };
+
+    if (openConfirmDialog.resultConfirm && openConfirmDialog.action === ActionsConfirmDialogEnum.REMOVE_TICKET) {
+      deleteTicketHandler();
+    } else if (
+      openConfirmDialog.resultConfirm &&
+      openConfirmDialog.action === ActionsConfirmDialogEnum.MARK_TICKET_TO_ACHIEVED
+    ) {
+      markTicketToAchieved();
+    }
   }, [openConfirmDialog.resultConfirm]);
 
   return (
@@ -63,6 +97,23 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
           </Typography>
         </CardContent>
         <CardActions>
+          {(() => {
+            if (ticket.achieved === true) {
+              return <div>Logrado</div>;
+            } else if (ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE && ticket.achieved != true) {
+              return (
+                <Button
+                  onClick={() => {
+                    setOpenConfirmDialog({ ...openConfirmDialog, openDialog: true });
+                  }}
+                  size="small"
+                >
+                  Marcar como logrado
+                </Button>
+              );
+            }
+          })()}
+
           {ticket.ticketCategory !== ExtraTicketCategoryEnum.TO_ENHANCE && (
             <Button
               onClick={() => {

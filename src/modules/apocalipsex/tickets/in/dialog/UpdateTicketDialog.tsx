@@ -1,17 +1,17 @@
 import React, { useContext, useState } from 'react';
-  import {
-    Button,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogActions,
-    withStyles,
-    createStyles,
-    Theme,
-    Typography,
-    IconButton,
-    TextField,
-  } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  withStyles,
+  createStyles,
+  Theme,
+  Typography,
+  IconButton,
+  TextField,
+} from '@material-ui/core';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import { TicketModel } from '../../out/ticket.types';
@@ -59,7 +59,7 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 export function UpdateTicketDialog({
   openUpdateDialog,
   setOpenUpdateDialog,
-  ticket: _ticket,
+  ticket: { achieved, ..._ticket },
 }: {
   openUpdateDialog: boolean;
   setOpenUpdateDialog: (openUpdateDialog: boolean) => void;
@@ -78,8 +78,8 @@ export function UpdateTicketDialog({
       },
     });
     setOpenUpdateDialog(false);
-    if(res.data) reFetchTicketListContext.setReFetchTicketList(true)
-  }
+    if (res.data) reFetchTicketListContext.setReFetchTicketList(true);
+  };
 
   return (
     <Dialog
@@ -115,11 +115,7 @@ export function UpdateTicketDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setOpenUpdateDialog(false)}>Cancelar</Button>
-        <Button
-          onClick={updateTicketHandler}
-        >
-          Guardar cambios
-        </Button>
+        <Button onClick={updateTicketHandler}>Guardar cambios</Button>
       </DialogActions>
     </Dialog>
   );
