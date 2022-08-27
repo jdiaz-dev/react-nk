@@ -18,3 +18,8 @@ export const checkAuthentication = (): boolean => {
   const auth = JSON.parse(localStorage.getItem(LocalStorageEnum.authenticated) || 'false');
   return auth;
 };
+
+export const removeUserFromLocalStorage = () => {
+  localStorage.removeItem(LocalStorageEnum.dataUser);
+  localStorage.removeItem(LocalStorageEnum.authenticated);
+};

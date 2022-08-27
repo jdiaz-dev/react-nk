@@ -63,6 +63,8 @@ export default App;
     - check if you were capable to accomplish with commandments established 
     - interaction counter
     - after 12am alert about commadments to accomplish  
+    - create logout component
+    - display entire text in update ticket dialog
 */
 
 // material UI: https://v4.mui.com/
@@ -72,8 +74,3 @@ export default App;
 //to build: npm run build
 //to sync to s3 bucket : aws s3 sync build/ s3://fe-apocalipsex-bucket
 
-/* 
-  * TODO
-    - create logout component
-    - display entire text in update ticket dialog
-*/
