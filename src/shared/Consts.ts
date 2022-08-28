@@ -16,7 +16,7 @@ export enum InteractionsEnum {
 export enum GenderEnum {
   MAN = 'Hombres',
   WOMAN = 'Mujeres',
-  GROUP = 'Grupales',
+  GROUP = 'Grupos',
 }
 
 export enum ActionsConfirmDialogEnum {

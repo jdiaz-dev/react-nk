@@ -5,7 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import './styles.scss';
-import { TicketCategoriesDetail, TicketCategoriesResponse } from '../out/types';
+import { TicketCategoriesDetail } from '../out/types';
 import { CommandmentCategoriesContext } from '../../apocalipsex/in/ApocalipsexContainer';
 
 const stylesCard = makeStyles({
@@ -38,7 +38,7 @@ const stylesTypography = makeStyles({
     height: '45px',
     lineHeight: '45px',
     textAlign: 'left',
-    paddingLeft: '10px'
+    paddingLeft: '10px',
   },
   title: {
     fontSize: 14,

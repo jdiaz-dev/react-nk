@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import { gql } from 'apollo-boost';
 
 export const logIn = gql`
   mutation doLogin($input: LoginDto!) {
@@ -7,4 +7,4 @@ export const logIn = gql`
       token
     }
   }
-`
+`;

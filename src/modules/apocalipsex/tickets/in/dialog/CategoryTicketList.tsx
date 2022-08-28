@@ -3,11 +3,10 @@ import React, { useContext, useState } from 'react';
 import { TicketModel } from '../../out/ticket.types';
 import { CommandmentCategoriesContext } from '../../../apocalipsex/in/ApocalipsexContainer';
 
-
 export function CategoryTicketList({
   ticket,
   setTicket,
-  setIsListShown = () => {},
+  setIsListShown = () => undefined,
 }: {
   ticket: TicketModel;
   setTicket: (model: TicketModel) => void;
@@ -26,13 +25,13 @@ export function CategoryTicketList({
 
   let categoryItems;
   if (ticketCategoriesContext) {
-    categoryItems = ticketCategoriesContext.map((item) => ( 
+    categoryItems = ticketCategoriesContext.map((item) => (
       <MenuItem
         key={item.name}
-        onClick={(e: any) => {
+        onClick={(e) => {
           handleClose();
           setIsListShown(false);
-          setTicket({ ...ticket, ticketCategory: e.target.innerText });
+          setTicket({ ...ticket, ticketCategory: (e.target as HTMLElement).innerText });
         }}
       >
         {item.name}
@@ -40,18 +39,36 @@ export function CategoryTicketList({
     ));
   }
   return (
-    <div style={{ padding: '40px' }}>
+    <div>
       <Button
-        aria-controls="simple-menu"
+        aria-controls="customized-menu"
         aria-haspopup="true"
+        variant="contained"
+        size="small"
         onClick={(e) => {
           handleClickButton(e);
           setIsListShown(true);
         }}
       >
-        <img src="https://icon-library.com/images/50x50-icon/50x50-icon-0.jpg" width="30" height="35" alt="" />
+        {ticket.ticketCategory}
       </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
         {categoryItems}
       </Menu>
     </div>

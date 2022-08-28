@@ -3,7 +3,7 @@ export type TicketModel = {
   content: string;
   commandment: string;
   ticketCategory: string;
-  achieved?: boolean;
+  achieved?: boolean | null;
   dateOffset?: number;
   __typename?: string;
 };
@@ -13,7 +13,7 @@ export type GetTicketGroupedByDay = {
   tickets: TicketModel[];
 };
 
-export type GetTicketGroupedByDayResponse = {
+export type GetTicketGroupedByDayMutation = {
   getTicketsGroupedByDay: GetTicketGroupedByDay[];
 };
 

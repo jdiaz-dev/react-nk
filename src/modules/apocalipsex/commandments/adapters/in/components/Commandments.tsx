@@ -1,17 +1,21 @@
+/* eslint-disable max-len */
+/* eslint-disable spaced-comment */
 import React from 'react';
 import { useQuery } from 'react-apollo';
+import { CommandmentDetail, GetCommandmentsResponse } from '../../out/commandments.types';
 import { GET_COMMANDMENTS } from '../../out/CommandmentsQueries';
 
-function Commandment({ commandment }: { commandment: any }) {
+function Commandment({ commandment }: { commandment: CommandmentDetail }) {
   return <li>{commandment.name}</li>;
 }
 
 //Commandments only is responsible to rende Commandment component
+
 export function Commandments() {
-  const { data } = useQuery(GET_COMMANDMENTS);
+  const { data } = useQuery<GetCommandmentsResponse>(GET_COMMANDMENTS);
   let commandments;
   if (data) {
-    commandments = data.getCommandments.map((commandment: any) => (
+    commandments = data.getCommandments.map((commandment: CommandmentDetail) => (
       /* 
         key prop
           - key allow to react identify which items in the lisht have changed, added or removed and place a crucial role in handling UI updates efficiently
@@ -26,9 +30,8 @@ export function Commandments() {
     ));
   }
 
-  const getCommandments = async () => {};
   return (
-    <div onLoad={getCommandments}>
+    <div>
       <ul>{commandments}</ul>
     </div>
   );

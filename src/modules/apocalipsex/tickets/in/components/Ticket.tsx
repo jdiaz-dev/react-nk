@@ -3,10 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { TicketModel } from '../../out/ticket.types';
-import {
-  Button,
-  CardActions,
-} from '@material-ui/core';
+import { Button, CardActions } from '@material-ui/core';
 import { useState } from 'react';
 import { UpdateTicketDialog } from '../dialog/UpdateTicketDialog';
 import { useMutation } from 'react-apollo';
@@ -65,29 +62,28 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
     };
 
     if (openConfirmDialog.resultConfirm && openConfirmDialog.action === ActionsConfirmDialogEnum.REMOVE_TICKET) {
-      deleteTicketHandler();
+      void deleteTicketHandler();
     } else if (
       openConfirmDialog.resultConfirm &&
       openConfirmDialog.action === ActionsConfirmDialogEnum.MARK_TICKET_TO_ACHIEVED
     ) {
-      markTicketToAchieved();
+      void markTicketToAchieved();
     }
   }, [openConfirmDialog.resultConfirm]);
 
   return (
     <>
-      <Card style={{ padding: '10px', marginBottom: '3%' }} variant="outlined">
+      <Card style={{ padding: '4px', marginBottom: '3%', maxHeight: '180px' }} variant="outlined">
         <CardContent
           onClick={
             ticket.ticketCategory !== ExtraTicketCategoryEnum.TO_ENHANCE
               ? () => setOpenUpdateDialog(true)
               : () => setOpenReadDialog(true)
           }
-          style={{ backgroundColor: 'red', margin: '5px' }}
+          style={{ backgroundColor: 'red', borderRadius: '4px', padding: '4px' }}
         >
-          <Typography color="textSecondary">{ticket.ticketCategory}</Typography>
           <Typography color="textSecondary">{ticket.commandment}</Typography>
-          <Typography variant="h5" component="p">
+          <Typography style={{ maxHeight: '100px', overflow: 'hidden' }} variant="body2" component="p">
             {ticket.content}
           </Typography>
         </CardContent>
@@ -95,7 +91,7 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
           {(() => {
             if (ticket.achieved === true) {
               return <div>Logrado</div>;
-            } else if (ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE && ticket.achieved && ticket.achieved != true) {
+            } else if (ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE && ticket.achieved == null) {
               return (
                 <Button
                   onClick={() => {

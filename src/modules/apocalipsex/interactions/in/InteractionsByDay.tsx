@@ -1,38 +1,36 @@
+/* eslint-disable indent */
 import React, { useContext, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
-import { useQuery } from 'react-apollo';
 import { createCustomDate } from '../../../../shared/helpers/functions';
 import {
   GetInteractionsByDayRequest,
   GetInteractionsByDayQuery,
   InteractionsRes,
   InteractionsModel,
+  InteractionsTuple,
 } from '../out/interaction.types';
 import { GET_INTERACTION_BY_DAY } from '../out/InteractionQueries';
 import './styles.scss';
 import UpdateInteractionsByDayDialog from './UpdateInteractionsByDayDialog';
 import { ReFetchInteractionsContext } from '../../apocalipsex/in/ApocalipsexContainer';
 import { GenderEnum, InteractionsEnum } from '../../../../shared/Consts';
+import { useQuery } from 'react-apollo';
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
+const chipStyles = makeStyles({
+  card: {
+    height: 40,
+    marginBottom: 10,
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
+  chip: {
+    width: '40%',
+    borderRadius: '5px',
+    backgroundColor: 'red',
+    fontSize: '16px',
+    marginLeft: '2%',
+    marginRight: '2%',
   },
 });
 
@@ -42,9 +40,8 @@ export function InteractionsByDay({ selectedDate }: { selectedDate: Date | null 
 
   const [interactions, setInteractions] = useState<InteractionsRes>(defaultInteractions);
   const [interactionsModel, setInteractionsModel] = useState<InteractionsModel>(defaultInteractions);
-  console.log('--------interactionsModel', interactionsModel);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
-  const { loading, refetch } = useQuery<GetInteractionsByDayQuery, GetInteractionsByDayRequest>(GET_INTERACTION_BY_DAY, {
+  const { refetch } = useQuery<GetInteractionsByDayQuery, GetInteractionsByDayRequest>(GET_INTERACTION_BY_DAY, {
     variables: {
       input: {
         startDate: createCustomDate(selectedDate, 0, 0, 0),
@@ -52,23 +49,28 @@ export function InteractionsByDay({ selectedDate }: { selectedDate: Date | null 
       },
     },
   });
-  const classes = useStyles();
+
+  const classes = chipStyles();
 
   useEffect(() => {
-    console.log('------reFetchInteractions', reFetchInteractionsContext.reFetchInteractions);
     if (reFetchInteractionsContext.reFetchInteractions) {
       refetch({
         input: {
           startDate: createCustomDate(selectedDate, 0, 0, 0),
           endDate: createCustomDate(selectedDate, 23, 59, 59),
         },
-      }).then((res) => {
-        if (res.data.getInteractionsByDay !== null) {
-          const { __typename, ..._interactions } = res.data.getInteractionsByDay.interactions;
-          setInteractions(_interactions);
-          setInteractionsModel({ _id: res.data.getInteractionsByDay._id, ..._interactions });
-        }
-      });
+      })
+        .then((res) => {
+          if (res.data.getInteractionsByDay !== null) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { __typename, ..._interactions } = res.data.getInteractionsByDay.interactions;
+            setInteractions(_interactions);
+            setInteractionsModel({ _id: res.data.getInteractionsByDay._id, ..._interactions });
+          }
+        })
+        .catch((err) => {
+          console.log('-------err', err);
+        });
     }
     reFetchInteractionsContext.setReFetchInteractions(false);
 
@@ -79,54 +81,35 @@ export function InteractionsByDay({ selectedDate }: { selectedDate: Date | null 
   }, [selectedDate, reFetchInteractionsContext.reFetchInteractions]);
 
   // if (loading) return <div>loading...</div>;
-  let _interactions;
-  _interactions = Object.keys(interactions).map((interaction, index) => (
-    <Card key={index} className={classes.root}>
-      <CardContent>
-        <Typography variant="h5" component="h2">
-          {interaction == InteractionsEnum.TOTAL_MEN
-            ? GenderEnum.MAN
-            : interaction == InteractionsEnum.TOTAL_WOMEN
-            ? GenderEnum.WOMAN
-            : GenderEnum.GROUP}
-          : {interactions[interaction]}
-        </Typography>
-      </CardContent>
-    </Card>
+  const _interactions = Object.keys(interactions).map((interaction, index) => (
+    <Chip
+      key={index}
+      className={classes.chip}
+      label={`${
+        interaction == InteractionsEnum.TOTAL_MEN
+          ? GenderEnum.MAN
+          : interaction == InteractionsEnum.TOTAL_WOMEN
+          ? GenderEnum.WOMAN
+          : GenderEnum.GROUP
+      }:${interactions[interaction as InteractionsTuple]}`}
+    />
   ));
   return (
-    <div className="containerInteractions">
-      <div>Total de abordajes</div>
-      <div className="boxInteractions" onClick={() => setOpenUpdateDialog(true)}>
-        {_interactions}
+    <>
+      <div className="containerInteractions" onClick={() => setOpenUpdateDialog(true)}>
+        <Card className={`cardInteractions ${classes.card}`}>
+          <Typography variant="h6" component="h3">
+            Abordajes
+          </Typography>
+
+          <div className="boxInteractions">{_interactions}</div>
+        </Card>
       </div>
       <UpdateInteractionsByDayDialog
         openUpdateDialog={openUpdateDialog}
         setOpenUpdateDialog={setOpenUpdateDialog}
         interactionsss={interactionsModel}
       />
-    </div>
+    </>
   );
 }
-
-/* <Card className={classes.root}>
-            <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
-                {{interaction}}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                be
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                adjective
-              </Typography>
-              <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Learn More</Button>
-            </CardActions>
-          </Card> */

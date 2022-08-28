@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button } from "@material-ui/core";
+import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
 
 export class OpenersContainer extends Component {
   render() {

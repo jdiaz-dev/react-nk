@@ -10,7 +10,6 @@ import {
   Theme,
   Typography,
   IconButton,
-  TextField,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -56,13 +55,12 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 });
 
 const chipStyles = makeStyles({
-  containerChip: {},
   chip: {
     width: '43%',
     borderRadius: '5px',
     backgroundColor: 'red',
     margin: '2%',
-    fontSize: '16px'
+    fontSize: '16px',
   },
 });
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from 'react';
 
 import './styles.scss';
@@ -7,13 +8,12 @@ import { useQuery } from 'react-apollo';
 import {
   GetTicketGroupedByDay,
   GetTicketGroupedByDayRequest,
-  GetTicketGroupedByDayResponse,
+  GetTicketGroupedByDayMutation,
   TicketModel,
 } from '../../out/ticket.types';
 import { CreateTicket } from './CreateTicket/CreateTicket';
 import { createCustomDate } from '../../../../../shared/helpers/functions';
 import { CommandmentCategoriesContext, ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
-import { TicketCategoriesDetail } from '../../../ticket-categories/out/types';
 import { ExtraTicketCategoryEnum } from '../../../../../shared/Consts';
 
 function TicketGroupedByCategory({ tickets = [] }: { tickets: TicketModel[] }) {
@@ -33,7 +33,7 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
 
   const startDay = createCustomDate(selectedDate, 0, 0, 0);
   const endDay = createCustomDate(selectedDate, 23, 59, 59);
-  const { loading, refetch } = useQuery<GetTicketGroupedByDayResponse, GetTicketGroupedByDayRequest>(
+  const { loading, refetch } = useQuery<GetTicketGroupedByDayMutation, GetTicketGroupedByDayRequest>(
     GET_TICKETS_GROUPED_BY_DAY,
     {
       variables: {
@@ -52,9 +52,13 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
           startDate: startDay,
           endDate: endDay,
         },
-      }).then((res) => {
-        setTickets(res.data.getTicketsGroupedByDay)
-      });
+      })
+        .then((res) => {
+          setTickets(res.data.getTicketsGroupedByDay);
+        })
+        .catch((err) => {
+          console.log('--------err', err);
+        });
       reFetchTicketListContext.setReFetchTicketList(false);
     }
     return () => {
@@ -65,13 +69,13 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
   if (loading) return <div>loading...</div>;
 
   return (
-    //fix: use fragments instead of div tag
+    // fix: use fragments instead of div tag
     <div>
-      <div className="ticket-list">
+      <div className="ticket-list" style={{ maxHeight: '61vh', border: '1px solid blue' }}>
         {ticketCategoriesContext.map((ticketCategory, index) => (
           <React.Fragment key={index}>
             {tickets[index] && tickets[index]?._id == ticketCategory.name && (
-              <div className="ticketCategoryContainer">
+              <div className="ticketCategoryContainer" style={{ overflowY: 'scroll' }}>
                 <TicketGroupedByCategory tickets={tickets[index].tickets} />
                 {ticketCategory.name !== ExtraTicketCategoryEnum.TO_ENHANCE && (
                   <CreateTicket category={ticketCategory.name} />

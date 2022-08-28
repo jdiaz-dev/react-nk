@@ -73,7 +73,7 @@ export function ApocalipsexContainer() {
                       />
                     </Grid>
                   </MuiPickersUtilsProvider>
-                  {/* <InteractionsByDay selectedDate={selectedDate} /> */}
+                  <InteractionsByDay selectedDate={selectedDate} />
                   <TicketCategories />
                   <TicketList selectedDate={selectedDate} />
                 </div>

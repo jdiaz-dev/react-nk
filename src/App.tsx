@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable max-len */
+/* eslint-disable spaced-comment */
 import React, { createContext, useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.scss';
 import { LogIn } from './modules/security/security/adapters/in/components/LogIn';
-// import { Navbar } from './modules/security/security/Navbar';
-import { SideNav } from './modules/security/security/SideNav';
 
 //Route and Routes are components
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -18,7 +18,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const loginStyles = makeStyles({
   container: {
     height: '100vh',
-    position: 'relative'
+    position: 'relative',
   },
   login: {
     width: '100%',

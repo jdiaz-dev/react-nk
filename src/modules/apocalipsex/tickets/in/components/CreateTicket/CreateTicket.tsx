@@ -1,4 +1,4 @@
-import React, { RefObject, useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Button } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -35,13 +35,13 @@ export function CreateTicket({ category }: { category: string }) {
     commandment: '',
     dateOffset: dayjs().utcOffset(),
   });
-  const [createTicket, { data }] = useMutation(CREATE_TICKET);
+  const [createTicket] = useMutation(CREATE_TICKET);
   const refDiv = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const clickOutsideHandler = (event: any) => {
+    const clickOutsideHandler = (event: MouseEvent) => {
       // !refDiv.current.contains : si no contiene es verdadero
-      if (refDiv.current && !refDiv.current.contains(event.target) && !isListShown) {
+      if (refDiv.current && !refDiv.current.contains(event.target as HTMLElement) && !isListShown) {
         setDisplayForm(false);
         setDisplayButton(true);
 
@@ -77,22 +77,28 @@ export function CreateTicket({ category }: { category: string }) {
         </Button>
       )}
       {displayForm && (
-        <Card>
+        <Card style={{ padding: '4px', marginTop: '3%' }}>
           <form className={classes.root} noValidate autoComplete="off">
+            <TextField
+              id="standard-basic"
+              fullWidth
+              multiline
+              label={category}
+              value={ticket.content}
+              onChange={(e) => setTicket({ ...ticket, content: e.target.value })}
+            />
+            <CommandmentList ticket={ticket} setTicket={setTicket} setIsListShown={setIsListShown} />
             <div className="data-card-box">
-              <TextField
-                id="standard-basic"
-                label={category}
-                value={ticket.content}
-                onChange={(e) => setTicket({ ...ticket, content: e.target.value })}
-              />
-              <CommandmentList ticket={ticket} setTicket={setTicket} setIsListShown={setIsListShown} />
+              <Button
+                variant="contained"
+                size="small"
+                style={{ backgroundColor: 'red', width: '100%' }}
+                type="button"
+                onClick={createTickeHandler}
+              >
+                Guardar
+              </Button>
             </div>
-
-            <br />
-            <Button type="button" onClick={createTickeHandler}>
-              Guardar
-            </Button>
           </form>
         </Card>
       )}

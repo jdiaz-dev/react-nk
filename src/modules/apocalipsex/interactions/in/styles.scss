@@ -1,12 +1,18 @@
 div.containerInteractions {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  border: 2px solid green;
+  display: block;
+  cursor: pointer;
 
-  div.boxInteractions {
-    width: 90%;
+  div.cardInteractions {
+    width: 100%;
     display: flex;
     justify-content: space-between;
+    // border: 2px solid green;
+    align-items: center;
+
+    div.boxInteractions {
+      width: 80%;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }

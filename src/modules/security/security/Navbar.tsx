@@ -1,17 +1,17 @@
-import React from "react";
+/* eslint-disable max-len */
+import React from 'react';
 
-//Link is a component
-//useMatch, useResolvedPath : are hooks
-//useMatch : it allow compare the current path that we are on to whatever path we want
-//useResolvedPath : allows to take relative or absolute path, it combine with the current path you're on  and gives you the actual full path that you would be accessing
-import { Link, useMatch, useResolvedPath } from "react-router-dom";
+// Link is a component
+// useMatch, useResolvedPath : are hooks
+// useMatch : it allow compare the current path that we are on to whatever path we want
+// useResolvedPath : allows to take relative or absolute path, it combine with the current path you're on  and gives you the actual full path that you would be accessing
+import { Link, To, useMatch, useResolvedPath } from 'react-router-dom';
 
-function CustomLink({ to, children, ...props }: { to: any; children: any }) {
-  const resolvedPath = useResolvedPath(to); //convert relative path to absolute path
-  const isActive = useMatch({ path: resolvedPath.pathname, end: true }); //end: true   -> we are saying that the entite path must to match, it due that we don't want to worry about the partial path
-  console.log("--------isActive", isActive);
+function CustomLink({ to, children }: { to: To; children: string }) {
+  const resolvedPath = useResolvedPath(to); // convert relative path to absolute path
+  const isActive = useMatch({ path: resolvedPath.pathname, end: true }); // end: true   -> we are saying that the entite path must to match, it due that we don't want to worry about the partial path
   return (
-    <li className={isActive ? "active" : ""}>
+    <li className={isActive ? 'active' : ''}>
       <Link to={to}>{children}</Link>
     </li>
   );
@@ -39,6 +39,3 @@ export function Navbar() {
     </div>
   );
 }
-
-
-

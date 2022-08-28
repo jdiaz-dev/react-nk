@@ -71,22 +71,26 @@ function UpdateInteractionsByDayDialog({
     setInteractions(_interactions);
   }, [_interactions]);
 
-  const createOrUpdateInteracionsHandler = () => {
+  const createOrUpdateInteracionsHandler = async () => {
     const input = {
       ...interactions,
     };
-    if (_interactions._id) {
-      updateInteractions({
-        variables: {
-          input,
-        },
-      });
-    } else {
-      createInteractions({
-        variables: {
-          input,
-        },
-      });
+    try {
+      if (_interactions._id) {
+        await updateInteractions({
+          variables: {
+            input,
+          },
+        });
+      } else {
+        await createInteractions({
+          variables: {
+            input,
+          },
+        });
+      }
+    } catch (error) {
+      console.log('------error', error);
     }
     setOpenUpdateDialog(false);
     reFetchInteractionsContext.setReFetchInteractions(true);

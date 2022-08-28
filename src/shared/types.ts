@@ -7,5 +7,5 @@ export type DataConfirm = {
   openDialog: boolean;
   resultConfirm: boolean;
   action: string;
-  message?: string
+  message?: string;
 };

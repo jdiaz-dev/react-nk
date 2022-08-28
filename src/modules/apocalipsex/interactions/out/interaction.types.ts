@@ -1,6 +1,5 @@
-/* export type InteractionModel = {
+export type InteractionsTuple = 'totalMen' | 'totalWomen' | 'totalGroups';
 
-} */
 export type InteractionsModel = {
   _id?: string;
   totalMen: number;

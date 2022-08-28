@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { LoginMutation, LoginRequest } from '../../out/security.types';
 
 const cardStyles = makeStyles({
   container: {
@@ -16,7 +17,7 @@ const cardStyles = makeStyles({
     position: 'absolute',
     top: '40%',
     left: '50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
   },
   card: {
     minWidth: 275,
@@ -26,7 +27,6 @@ const cardStyles = makeStyles({
   },
   form: {
     width: '100%',
-
   },
   textField: {
     width: '90%',
@@ -59,17 +59,17 @@ export function LogIn() {
   const authContext = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loginHandler, { data }] = useMutation(logIn);
+  const [loginHandler, { data }] = useMutation<LoginMutation, LoginRequest>(logIn);
   if (data) {
     saveDataUser(data.logIn);
     authContext.setIsAuthenticated(true);
     return <Navigate replace to="/sidenav/tickets" />;
   }
 
-  const handleEmailChange = (e: any) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
-  const handlePasswordChange = (e: any) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 

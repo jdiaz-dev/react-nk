@@ -1,10 +1,60 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+/* --------my styles */
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  border-width: 20px;
+  border-color: black;
+  background-color: red;
+}
+.nav {
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+.site-tile {
+  font-size: 2rem;
+}
+
+.nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+}
+
+.nav li:hover {
+  background-color: #777;
+}
+.nav li.active {
+  background-color: #555;
 }
 
 .App {
   text-align: center;
+  height: 100vh;
 }
 
 .App-logo {
@@ -43,7 +93,7 @@
 }
 
 /* ------both main container of apocalipsex component */
-div.ticket-categories{
+div.ticket-categories {
   margin-bottom: 10px;
 }
 div.ticket-categories,
@@ -63,6 +113,8 @@ div.ticket-list {
 .main-container {
   display: flex;
   justify-content: space-between;
+  height: 100vh;
+
   .sidebar {
     width: 20%;
   }

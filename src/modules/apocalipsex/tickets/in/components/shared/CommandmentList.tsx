@@ -9,7 +9,7 @@ import { CommandmentsContext } from '../../../../apocalipsex/in/ApocalipsexConta
 export function CommandmentList({
   ticket,
   setTicket,
-  setIsListShown = () => {},
+  setIsListShown = () => undefined,
 }: {
   ticket: TicketModel;
   setTicket: (model: TicketModel) => void;
@@ -31,10 +31,10 @@ export function CommandmentList({
     commandmentItems = commandmentContext.map((item) => (
       <MenuItem
         key={item.name}
-        onClick={(e: any) => {
+        onClick={(e) => {
           handleClose();
           setIsListShown(false);
-          setTicket({ ...ticket, commandment: e.target.innerText });
+          setTicket({ ...ticket, commandment: (e.target as HTMLElement).innerText });
         }}
       >
         {item.name}
@@ -42,18 +42,36 @@ export function CommandmentList({
     ));
   }
   return (
-    <div style={{ padding: '40px' }}>
+    <div>
       <Button
-        aria-controls="simple-menu"
-        aria-haspopup="true"
+        aria-controls="customized-menu"
+        variant="contained"
+        size="small"
+        style={{ width: '70%' }}
         onClick={(e) => {
           handleClickButton(e);
           setIsListShown(true);
         }}
       >
-        <img src="https://icon-library.com/images/50x50-icon/50x50-icon-0.jpg" width="25" height="30" alt="" />
+        {ticket.commandment ? ticket.commandment : 'Mandamiento'}
       </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+      <Menu
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
         {commandmentItems}
       </Menu>
     </div>
