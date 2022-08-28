@@ -5,11 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import { TicketModel } from '../../out/ticket.types';
 import {
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   CardActions,
 } from '@material-ui/core';
 import { useState } from 'react';
@@ -100,7 +95,7 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
           {(() => {
             if (ticket.achieved === true) {
               return <div>Logrado</div>;
-            } else if (ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE && ticket.achieved != true) {
+            } else if (ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE && ticket.achieved && ticket.achieved != true) {
               return (
                 <Button
                   onClick={() => {

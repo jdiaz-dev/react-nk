@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.scss';
-import LogIn from './modules/security/security/adapters/in/components/LogIn';
+import { LogIn } from './modules/security/security/adapters/in/components/LogIn';
 // import { Navbar } from './modules/security/security/Navbar';
 import { SideNav } from './modules/security/security/SideNav';
 
@@ -13,6 +13,17 @@ import OpenersContainer from './modules/openers/openers/adapters/in/OpenersConta
 import { ApocalipsexContainer } from './modules/apocalipsex/apocalipsex/in/ApocalipsexContainer';
 import { Drawer } from './shared/components/Drawer';
 import { checkAuthentication } from './shared/helpers/LocalStorage';
+import { makeStyles } from '@material-ui/core/styles';
+
+const loginStyles = makeStyles({
+  container: {
+    height: '100vh',
+    position: 'relative'
+  },
+  login: {
+    width: '100%',
+  },
+});
 
 export const AuthContext = createContext<{
   isAuthenticated: boolean;
@@ -20,6 +31,8 @@ export const AuthContext = createContext<{
 }>({ isAuthenticated: true, setIsAuthenticated: useState });
 
 function App() {
+  const loginClasses = loginStyles();
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
     setIsAuthenticated(checkAuthentication());
@@ -38,7 +51,16 @@ function App() {
         <Routes>
           {/* wrapping entire al  routes between Routes  */}
           <Route path="/" element={<LogIn />} />
-          {!isAuthenticated && <Route path="/login" element={<LogIn />} />}
+          {!isAuthenticated && (
+            <Route
+              path="/login"
+              element={
+                <div className={loginClasses.container}>
+                  <LogIn />
+                </div>
+              }
+            />
+          )}
 
           {/* <Route path="sidenav" element={<SideNav />}> */}
           {isAuthenticated && (
@@ -73,4 +95,3 @@ export default App;
 
 //to build: npm run build
 //to sync to s3 bucket : aws s3 sync build/ s3://fe-apocalipsex-bucket
-

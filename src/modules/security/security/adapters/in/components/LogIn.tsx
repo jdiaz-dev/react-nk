@@ -5,14 +5,64 @@ import { logIn } from '../../out/SecurityQueries';
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../../../../../../App';
 
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+const cardStyles = makeStyles({
+  container: {
+    margin: '0px',
+    position: 'absolute',
+    top: '40%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  },
+  card: {
+    minWidth: 275,
+    width: '70%',
+    margin: '0px auto',
+    padding: '0px',
+  },
+  form: {
+    width: '100%',
+
+  },
+  textField: {
+    width: '90%',
+    marginTop: '15px',
+  },
+  button: {
+    backgroundColor: 'blue',
+    width: '90%',
+
+    color: 'white',
+    height: '45px',
+    marginTop: '15px',
+    marginBottom: '15px',
+    '&:hover': {
+      backgroundColor: 'blue',
+    },
+  },
+  title: {
+    fontSize: 14,
+    width: '85%',
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
+
 export function LogIn() {
+  const classes = cardStyles();
+
   const authContext = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginHandler, { data }] = useMutation(logIn);
   if (data) {
     saveDataUser(data.logIn);
-    authContext.setIsAuthenticated(true)
+    authContext.setIsAuthenticated(true);
     return <Navigate replace to="/sidenav/tickets" />;
   }
 
@@ -24,34 +74,43 @@ export function LogIn() {
   };
 
   return (
-    <div>
-      <form>
-        <label>
-          Email:
-          <input type="text" name="email" placeholder="Email" value={email} onChange={handleEmailChange} />
-        </label>
-        <label>
-          password:
-          <input type="text" name="name" placeholder="Password" value={password} onChange={handlePasswordChange} />
-        </label>
-        <button
-          type="button"
-          onClick={() =>
-            loginHandler({
-              variables: {
-                input: {
-                  email,
-                  password,
+    <div className={classes.container}>
+      <Card className={classes.card} variant="outlined">
+        <form className={classes.form} noValidate autoComplete="off">
+          <TextField
+            className={classes.textField}
+            id="outlined-basic"
+            label="Correo electrónico"
+            value={email}
+            variant="outlined"
+            onChange={handleEmailChange}
+          />
+          <TextField
+            className={classes.textField}
+            id="filled-basic"
+            label="Contraseña"
+            variant="outlined"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <Button
+            className={classes.button}
+            size="small"
+            onClick={() =>
+              loginHandler({
+                variables: {
+                  input: {
+                    email,
+                    password,
+                  },
                 },
-              },
-            })
-          }
-        >
-          Login
-        </button>
-      </form>
+              })
+            }
+          >
+            Iniciar sesión
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }
-
-export default LogIn;

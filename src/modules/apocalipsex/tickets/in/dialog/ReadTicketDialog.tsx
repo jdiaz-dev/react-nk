@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import {
   Button,
   Dialog,
@@ -12,15 +12,13 @@ import {
   IconButton,
   TextField,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import { TicketModel } from '../../out/ticket.types';
 import { WithStyles } from '@material-ui/styles';
-import { CommandmentList } from '../components/shared/CommandmentList';
-import { CategoryTicketList } from './CategoryTicketList';
-import { useMutation } from 'react-apollo';
-import { UDPDATE_TICKET } from '../../out/TicketQueries';
-import { ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
+import Chip from '@material-ui/core/Chip';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -44,6 +42,7 @@ export interface DialogTitleProps extends WithStyles<typeof styles> {
 
 const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   const { children, classes, onClose, ...other } = props;
+
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
       <Typography variant="h6">{children}</Typography>
@@ -56,21 +55,27 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
   );
 });
 
+const chipStyles = makeStyles({
+  containerChip: {},
+  chip: {
+    width: '43%',
+    borderRadius: '5px',
+    backgroundColor: 'red',
+    margin: '2%',
+    fontSize: '16px'
+  },
+});
+
 export function ReadTicketDialog({
-    openReadDialog,
-    setOpenReadDialog,
+  openReadDialog,
+  setOpenReadDialog,
   ticket: _ticket,
 }: {
-    openReadDialog: boolean;
-    setOpenReadDialog: (openReadDialog: boolean) => void;
+  openReadDialog: boolean;
+  setOpenReadDialog: (openReadDialog: boolean) => void;
   ticket: TicketModel;
 }) {
-  const [ticket, setTicket] = useState<TicketModel>({ ..._ticket });
-
- /*  const updateTicketHandler = async () => {
-    setOpenReadDialog(false);
-  }; */
-
+  const chipClass = chipStyles();
   return (
     <Dialog
       open={openReadDialog}
@@ -82,16 +87,13 @@ export function ReadTicketDialog({
     >
       <DialogTitle id="dialog-title" onClose={setOpenReadDialog}>
         <div>
-          asdfsdfasdf
-          {ticket.commandment}
-        </div>
-        <div>
-          {ticket.ticketCategory}
+          <Chip className={chipClass.chip} label={`Mandamiento: ${_ticket.commandment}`} />
+          <Chip className={chipClass.chip} label={`Estado del ticket: ${_ticket.ticketCategory}`} />
         </div>
       </DialogTitle>
       <DialogContent dividers>
         <DialogContentText id="dialog-description"></DialogContentText>
-        {ticket.content}
+        {_ticket.content}
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setOpenReadDialog(false)}>Cerrar</Button>

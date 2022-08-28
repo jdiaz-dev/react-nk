@@ -53,7 +53,6 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
           endDate: endDay,
         },
       }).then((res) => {
-        console.log('-----res', res)
         setTickets(res.data.getTicketsGroupedByDay)
       });
       reFetchTicketListContext.setReFetchTicketList(false);
