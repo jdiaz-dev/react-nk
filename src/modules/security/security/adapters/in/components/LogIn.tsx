@@ -10,6 +10,7 @@ import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { LoginMutation, LoginRequest } from '../../out/security.types';
+import { CreateUserDialog } from '../../../../users/adapters/in/dialog/CreateUserDialog';
 
 const cardStyles = makeStyles({
   container: {
@@ -32,16 +33,26 @@ const cardStyles = makeStyles({
     width: '90%',
     marginTop: '15px',
   },
-  button: {
+  loginButton: {
     backgroundColor: 'blue',
     width: '90%',
-
     color: 'white',
     height: '45px',
     marginTop: '15px',
     marginBottom: '15px',
     '&:hover': {
       backgroundColor: 'blue',
+    },
+  },
+  registerButton: {
+    backgroundColor: 'green',
+    width: '90%',
+    color: 'white',
+    height: '45px',
+    marginTop: '15px',
+    marginBottom: '15px',
+    '&:hover': {
+      backgroundColor: 'green',
     },
   },
   title: {
@@ -59,6 +70,7 @@ export function LogIn() {
   const authContext = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [openCreateUserDialog, setopenCreateUserDialog] = useState(false);
   const [loginHandler, { data }] = useMutation<LoginMutation, LoginRequest>(logIn);
   if (data) {
     saveDataUser(data.logIn);
@@ -91,10 +103,11 @@ export function LogIn() {
             label="Contraseña"
             variant="outlined"
             value={password}
+            type="password"
             onChange={handlePasswordChange}
           />
           <Button
-            className={classes.button}
+            className={classes.loginButton}
             size="small"
             onClick={() =>
               loginHandler({
@@ -109,6 +122,10 @@ export function LogIn() {
           >
             Iniciar sesión
           </Button>
+          <Button className={`${classes.registerButton}`} size="small" onClick={() => setopenCreateUserDialog(true)}>
+            Crear cuenta nueva
+          </Button>
+          <CreateUserDialog openCreateUserDialog={openCreateUserDialog} setopenCreateUserDialog={setopenCreateUserDialog} />
         </form>
       </Card>
     </div>

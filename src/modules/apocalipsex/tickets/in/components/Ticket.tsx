@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { TicketModel } from '../../out/ticket.types';
+import { TicketModel, UpdateTicketToAchievedMutation, UpdateTicketToAchievedRequest } from '../../out/ticket.types';
 import { Button, CardActions } from '@material-ui/core';
 import { useState } from 'react';
 import { UpdateTicketDialog } from '../dialog/UpdateTicketDialog';
@@ -32,9 +32,12 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
         ? MessagesConfirmEnum.MARK_TICKET_TO_ACHIEVED
         : MessagesConfirmEnum.REMOVE_TICKET,
   });
+  const [achieved, setAchieved] = useState(false);
 
   const [deleteTicket] = useMutation(DELETE_TICKET);
-  const [updateTicketToAchieved] = useMutation(UPDATE_TICKET_TO_ACHIVED);
+  const [updateTicketToAchieved] = useMutation<UpdateTicketToAchievedMutation, UpdateTicketToAchievedRequest>(
+    UPDATE_TICKET_TO_ACHIVED,
+  );
 
   useEffect(() => {
     const deleteTicketHandler = async () => {
@@ -53,7 +56,8 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
       const res = await updateTicketToAchieved({
         variables: {
           input: {
-            _id: ticket._id,
+            _id: ticket._id ? ticket._id : '',
+            achieved,
           },
         },
       });
@@ -89,9 +93,13 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
         </CardContent>
         <CardActions>
           {(() => {
-            if (ticket.achieved === true) {
+            if (ticket.resultTicket?.achieved === true) {
               return <div>Logrado</div>;
-            } else if (ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE && ticket.achieved == null) {
+            } else if (
+              ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE &&
+              ticket.resultTicket?.achieved == false &&
+              ticket.resultTicket?.marked == false
+            ) {
               return (
                 <Button
                   onClick={() => {
@@ -115,7 +123,7 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
               Eliminar ticket
             </Button>
           )}
-          <ConfirmDialog dataConfirm={openConfirmDialog} setDataConfirm={setOpenConfirmDialog} />
+          <ConfirmDialog dataConfirm={openConfirmDialog} setDataConfirm={setOpenConfirmDialog} setAchieved={setAchieved} />
         </CardActions>
       </Card>
       {ticket.ticketCategory !== ExtraTicketCategoryEnum.TO_ENHANCE && (

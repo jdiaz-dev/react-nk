@@ -69,7 +69,7 @@ export function UpdateTicketDialog({
   openUpdateDialog,
   setOpenUpdateDialog,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ticket: { achieved, ..._ticket },
+  ticket: { resultTicket, ..._ticket },
 }: {
   openUpdateDialog: boolean;
   setOpenUpdateDialog: (openUpdateDialog: boolean) => void;

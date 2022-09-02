@@ -54,6 +54,7 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
         },
       })
         .then((res) => {
+          // console.log('----------res', res);
           setTickets(res.data.getTicketsGroupedByDay);
         })
         .catch((err) => {

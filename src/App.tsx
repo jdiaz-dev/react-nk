@@ -87,6 +87,9 @@ export default App;
     - after 12am alert about commadments to accomplish  
     - create logout component
     - display entire text in update ticket dialog
+
+    - give color to the tickets or more presence (border)
+    - give more focus to the commandment
 */
 
 // material UI: https://v4.mui.com/
@@ -95,3 +98,10 @@ export default App;
 
 //to build: npm run build
 //to sync to s3 bucket : aws s3 sync build/ s3://fe-apocalipsex-bucket
+
+/* 
+  - ideas
+  - functionality to review productivity at sargear moment
+  - continue with openers
+  - funtionality to verify commandments accomplish by day, out of commandments to practice
+*/

@@ -6,9 +6,11 @@ import { ActionsConfirmDialogEnum, MessagesConfirmEnum } from '../Consts';
 export function ConfirmDialog({
   dataConfirm,
   setDataConfirm,
+  setAchieved,
 }: {
   dataConfirm: DataConfirm;
   setDataConfirm: (dataConfirm: DataConfirm) => void;
+  setAchieved?: (achieved: boolean) => void;
 }) {
   return (
     <Dialog
@@ -34,17 +36,33 @@ export function ConfirmDialog({
         )}
 
         {dataConfirm.message === MessagesConfirmEnum.MARK_TICKET_TO_ACHIEVED && (
-          <Button
-            onClick={() =>
-              setDataConfirm({
-                openDialog: false,
-                resultConfirm: true,
-                action: ActionsConfirmDialogEnum.MARK_TICKET_TO_ACHIEVED,
-              })
-            }
-          >
-            Marcar como logrado
-          </Button>
+          <>
+            <Button
+              onClick={() => {
+                setDataConfirm({
+                  openDialog: false,
+                  resultConfirm: true,
+                  action: ActionsConfirmDialogEnum.MARK_TICKET_TO_ACHIEVED,
+                });
+                if (setAchieved) setAchieved(false);
+              }}
+            >
+              No Logrado
+            </Button>
+            <Button
+              onClick={() => {
+                setDataConfirm({
+                  openDialog: false,
+                  resultConfirm: true,
+                  action: ActionsConfirmDialogEnum.MARK_TICKET_TO_ACHIEVED,
+                });
+
+                if (setAchieved) setAchieved(true);
+              }}
+            >
+              logrado
+            </Button>
+          </>
         )}
       </DialogActions>
     </Dialog>

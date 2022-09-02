@@ -21,7 +21,10 @@ export const GET_TICKETS_GROUPED_BY_DAY = gql`
         ticketCategory
         content
         commandment
-        achieved
+        resultTicket {
+          achieved
+          marked
+        }
       }
     }
   }

@@ -69,7 +69,6 @@ function CategoryTicket({ name }: { name: string }) {
 export function TicketCategories() {
   const ticketCategoriesContext = useContext(CommandmentCategoriesContext);
   let ticketCategories;
-
   if (ticketCategoriesContext) {
     ticketCategories = ticketCategoriesContext.map((ticketCategory: TicketCategoriesDetail) => (
       <CategoryTicket key={ticketCategory.name} name={ticketCategory.name} />

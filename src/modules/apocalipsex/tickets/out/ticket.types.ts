@@ -1,9 +1,23 @@
+export type UpdateTicketToAchievedMutation = {
+  updateTicketToAchieved: TicketModel;
+};
+
+export type UpdateTicketToAchievedRequest = {
+  input: {
+    _id: string;
+    achieved: boolean;
+  };
+};
+
 export type TicketModel = {
   _id?: string;
   content: string;
   commandment: string;
   ticketCategory: string;
-  achieved?: boolean | null;
+  resultTicket?: {
+    achieved: boolean;
+    marked: boolean;
+  };
   dateOffset?: number;
   __typename?: string;
 };
