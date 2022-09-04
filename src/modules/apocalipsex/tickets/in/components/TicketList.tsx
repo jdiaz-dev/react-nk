@@ -72,11 +72,11 @@ export function TicketList({ selectedDate }: { selectedDate: Date | null }) {
   return (
     // fix: use fragments instead of div tag
     <div>
-      <div className="ticket-list" style={{ maxHeight: '61vh', border: '1px solid blue' }}>
+      <div className="ticket-list" style={{ maxHeight: '61vh' }}>
         {ticketCategoriesContext.map((ticketCategory, index) => (
           <React.Fragment key={index}>
             {tickets[index] && tickets[index]?._id == ticketCategory.name && (
-              <div className="ticketCategoryContainer" style={{ overflowY: 'scroll' }}>
+              <div className="ticketCategoryContainer" style={{ overflowY: 'scroll', overflowWrap: 'break-word' }}>
                 <TicketGroupedByCategory tickets={tickets[index].tickets} />
                 {ticketCategory.name !== ExtraTicketCategoryEnum.TO_ENHANCE && (
                   <CreateTicket category={ticketCategory.name} />

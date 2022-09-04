@@ -66,7 +66,7 @@ function App() {
           {isAuthenticated && (
             <Route path="sidenav" element={<Drawer />}>
               <Route path="Mandamientos" element={<Commandments />} />
-              <Route path="Abridores" element={<OpenersContainer />} />
+              {/* <Route path="Abridores" element={<OpenersContainer />} /> */}
               <Route path="Tickets" element={<ApocalipsexContainer />} />
             </Route>
           )}

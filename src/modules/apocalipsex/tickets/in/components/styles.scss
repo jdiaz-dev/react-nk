@@ -1,4 +1,7 @@
-
-div{
-    // justify-content: ;
+.ticketCategoryContainer::-webkit-scrollbar {
+  width: 4px;
+}
+.ticketCategoryContainer::-webkit-scrollbar-thumb {
+  background: #3d3d3d;
+  border-radius: 10px;
 }

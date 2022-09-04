@@ -73,7 +73,7 @@ export function CreateTicket({ category }: { category: string }) {
             setDisplayButton(!displayButton);
           }}
         >
-          Create Ticket
+          Crear Ticket
         </Button>
       )}
       {displayForm && (
@@ -92,7 +92,7 @@ export function CreateTicket({ category }: { category: string }) {
               <Button
                 variant="contained"
                 size="small"
-                style={{ backgroundColor: 'red', width: '100%' }}
+                style={{ backgroundColor: '#264289', color: 'white', width: '92%' }}
                 type="button"
                 onClick={createTickeHandler}
               >

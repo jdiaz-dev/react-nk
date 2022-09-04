@@ -11,6 +11,8 @@ import { DELETE_TICKET, UPDATE_TICKET_TO_ACHIVED } from '../../out/TicketQueries
 import { ConfirmDialog } from '../../../../../shared/components/ConfirmDialog';
 import { DataConfirm } from '../../../../../shared/types';
 import { ReFetchTicketListContext } from '../../../apocalipsex/in/ApocalipsexContainer';
+import { makeStyles } from '@material-ui/core/styles';
+
 import {
   ActionsConfirmDialogEnum,
   ExtraTicketCategoryEnum,
@@ -19,7 +21,28 @@ import {
 } from '../../../../../shared/Consts';
 import { ReadTicketDialog } from '../dialog/ReadTicketDialog';
 
+const useStyles = makeStyles({
+  root: {
+    // backgroundColor: '#333333',
+    width: '98%',
+    margin: '0 auto',
+  },
+  bullet: {
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
+
 export function Ticket({ ticket }: { ticket: TicketModel }) {
+  const classes = useStyles();
+
   const reFetchTicketListContext = useContext(ReFetchTicketListContext);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openReadDialog, setOpenReadDialog] = useState(false);
@@ -77,28 +100,40 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
 
   return (
     <>
-      <Card style={{ padding: '4px', marginBottom: '3%', maxHeight: '180px' }} variant="outlined">
+      <Card
+        className={classes.root}
+        style={{ padding: '4px', marginBottom: '4%', maxHeight: '180px' }}
+        elevation={4}
+        // variant="outlined"
+      >
         <CardContent
           onClick={
             ticket.ticketCategory !== ExtraTicketCategoryEnum.TO_ENHANCE
               ? () => setOpenUpdateDialog(true)
               : () => setOpenReadDialog(true)
           }
-          style={{ backgroundColor: 'red', borderRadius: '4px', padding: '4px' }}
+          style={{
+            backgroundColor: ticket.ticketCategory == ExtraTicketCategoryEnum.TO_ENHANCE ? '#606060' : '#dbbd29',
+            color: ticket.ticketCategory == ExtraTicketCategoryEnum.TO_ENHANCE ? 'wheat' : '#282306',
+            borderRadius: '4px',
+            padding: '4px',
+            cursor: 'pointer',
+          }}
         >
           <Typography color="textSecondary">{ticket.commandment}</Typography>
-          <Typography style={{ maxHeight: '100px', overflow: 'hidden' }} variant="body2" component="p">
+          <Typography style={{ maxHeight: '150px', overflow: 'hidden' }} variant="body2" component="p">
             {ticket.content}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions style={{ padding: 0 }}>
           {(() => {
-            if (ticket.resultTicket?.achieved === true) {
+            if (ticket.resultTicket && ticket.resultTicket.achieved === true) {
               return <div>Logrado</div>;
             } else if (
               ticket.ticketCategory === ExtraTicketCategoryEnum.TO_ENHANCE &&
-              ticket.resultTicket?.achieved == false &&
-              ticket.resultTicket?.marked == false
+              ticket.resultTicket &&
+              ticket.resultTicket.achieved == false &&
+              ticket.resultTicket.marked == false
             ) {
               return (
                 <Button
@@ -120,7 +155,7 @@ export function Ticket({ ticket }: { ticket: TicketModel }) {
               }}
               size="small"
             >
-              Eliminar ticket
+              Eliminar
             </Button>
           )}
           <ConfirmDialog dataConfirm={openConfirmDialog} setDataConfirm={setOpenConfirmDialog} setAchieved={setAchieved} />

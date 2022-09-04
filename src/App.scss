@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  // color: white
 }
 
 /* --------my styles */
@@ -113,7 +114,7 @@ div.ticket-list {
 .main-container {
   display: flex;
   justify-content: space-between;
-  height: 100vh;
+  height: 101vh;
 
   .sidebar {
     width: 20%;
@@ -122,3 +123,5 @@ div.ticket-list {
     width: 80%;
   }
 }
+
+

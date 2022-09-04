@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import './styles.scss';
 import { TicketCategoriesDetail } from '../out/types';
 import { CommandmentCategoriesContext } from '../../apocalipsex/in/ApocalipsexContainer';
+import { TicketCategoriesEnum } from '../../../../shared/Consts';
 
 const stylesCard = makeStyles({
   root: {
@@ -26,7 +27,7 @@ const stylesCard = makeStyles({
 
 const stylesCardContent = makeStyles({
   root: {
-    background: 'blue',
+    color: 'white',
     margin: '0px',
     padding: '0px',
   },
@@ -34,7 +35,6 @@ const stylesCardContent = makeStyles({
 
 const stylesTypography = makeStyles({
   root: {
-    background: 'blue',
     height: '45px',
     lineHeight: '45px',
     textAlign: 'left',
@@ -52,7 +52,10 @@ function CategoryTicket({ name }: { name: string }) {
 
   return (
     <div className="category-container">
-      <Card className={classCard.root}>
+      <Card
+        className={classCard.root}
+        style={{ backgroundColor: name === TicketCategoriesEnum.TO_ENHANCE ? '#001739' : '#38234B' }}
+      >
         <CardContent className={classCardContent.root}>
           <Typography className={classTypography.root} variant="h5" component="h2">
             {name}

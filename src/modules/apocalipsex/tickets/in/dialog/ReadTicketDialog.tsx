@@ -56,11 +56,17 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 
 const chipStyles = makeStyles({
   chip: {
-    width: '43%',
+    width: '45%',
     borderRadius: '5px',
-    backgroundColor: 'red',
-    margin: '2%',
+    margin: '1%',
     fontSize: '16px',
+    color: 'white',
+  },
+  chipCommandment: {
+    backgroundColor: '#264289',
+  },
+  chipTicketCategory: {
+    backgroundColor: '#5b4e9d',
   },
 });
 
@@ -85,8 +91,14 @@ export function ReadTicketDialog({
     >
       <DialogTitle id="dialog-title" onClose={setOpenReadDialog}>
         <div>
-          <Chip className={chipClass.chip} label={`Mandamiento: ${_ticket.commandment}`} />
-          <Chip className={chipClass.chip} label={`Estado del ticket: ${_ticket.ticketCategory}`} />
+          <Chip
+            className={`${chipClass.chip} ${chipClass.chipCommandment}`}
+            label={`Mandamiento:  ${_ticket.commandment}`}
+          />
+          <Chip
+            className={`${chipClass.chip} ${chipClass.chipTicketCategory}`}
+            label={`Estado del ticket: ${_ticket.ticketCategory}`}
+          />
         </div>
       </DialogTitle>
       <DialogContent dividers>

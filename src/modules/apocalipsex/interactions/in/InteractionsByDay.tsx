@@ -27,10 +27,12 @@ const chipStyles = makeStyles({
   chip: {
     width: '40%',
     borderRadius: '5px',
-    backgroundColor: 'red',
+    backgroundColor: '#434156',
+    color: 'white',
     fontSize: '16px',
     marginLeft: '2%',
     marginRight: '2%',
+    cursor: 'pointer',
   },
 });
 
@@ -91,7 +93,7 @@ export function InteractionsByDay({ selectedDate }: { selectedDate: Date | null 
           : interaction == InteractionsEnum.TOTAL_WOMEN
           ? GenderEnum.WOMAN
           : GenderEnum.GROUP
-      }:${interactions[interaction as InteractionsTuple]}`}
+      }: ${interactions[interaction as InteractionsTuple]}`}
     />
   ));
   return (

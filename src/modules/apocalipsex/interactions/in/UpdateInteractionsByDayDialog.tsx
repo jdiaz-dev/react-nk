@@ -112,6 +112,7 @@ function UpdateInteractionsByDayDialog({
             id="standard-basic"
             label="hombres"
             variant="outlined"
+            style={{ margin: '3px' }}
             value={interactions.totalMen}
             onChange={(e) => setInteractions({ ...interactions, totalMen: parseInt(e.target.value) })}
           />
@@ -119,6 +120,7 @@ function UpdateInteractionsByDayDialog({
             id="filled-basic"
             label="mujeres"
             variant="outlined"
+            style={{ margin: '3px' }}
             value={interactions.totalWomen}
             onChange={(e) => setInteractions({ ...interactions, totalWomen: parseInt(e.target.value) })}
           />
@@ -126,6 +128,7 @@ function UpdateInteractionsByDayDialog({
             id="outlined-basic"
             label="grupales"
             variant="outlined"
+            style={{ margin: '3px' }}
             value={interactions.totalGroups}
             onChange={(e) => setInteractions({ ...interactions, totalGroups: parseInt(e.target.value) })}
           />

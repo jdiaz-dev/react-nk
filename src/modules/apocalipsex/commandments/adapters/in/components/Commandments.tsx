@@ -4,9 +4,15 @@ import React from 'react';
 import { useQuery } from 'react-apollo';
 import { CommandmentDetail, GetCommandmentsResponse } from '../../out/commandments.types';
 import { GET_COMMANDMENTS } from '../../out/CommandmentsQueries';
+import Chip from '@material-ui/core/Chip';
 
 function Commandment({ commandment }: { commandment: CommandmentDetail }) {
-  return <li>{commandment.name}</li>;
+  return (
+    <>
+      <Chip style={{ marginBottom: '5px', width: '20%' }} label={commandment.name} />
+      <br />
+    </>
+  );
 }
 
 //Commandments only is responsible to rende Commandment component
